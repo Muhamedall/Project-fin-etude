@@ -1,12 +1,9 @@
-
-const Homme=()=>{
-  return(
+function Homme() {
+  return (
     <>
-    <h1 className="">Homme page welcom one</h1>
-    
-   
-    
+      <h1 className=" ">Hello world</h1>
     </>
-  )
+  );
 }
+
 export default Homme;
