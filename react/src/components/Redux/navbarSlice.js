@@ -12,6 +12,7 @@ const navbarSlice = createSlice({
     setShowProfile(state, action) {
       state.showProfile = action.payload;
     },
+  
     setShowLogine (state ,action){
       state.showLogine = action.payload;
 
