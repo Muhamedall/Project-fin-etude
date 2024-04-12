@@ -2,11 +2,13 @@
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { setShowProfile ,setShowLogine } from '../Redux/navbarSlice';
 
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import logo from './housetica__1_-removebg-preview.png';
+import logo from './White_And_Black_Modern_Abstract_Beauty_Logo-removebg-preview.png';
 
 const Navbar = () => {
   const showProfile = useSelector((state) => state.navbar.showProfile);
@@ -29,47 +31,109 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="  max-sm:drop-shadow-md  max-sm:static drop-shadow-md  lg:static drop-shadow-md header sticky top-0 lg:bg-slate-50 lg:shadow-md flex items-center justify-between px-8 ">
-          <div className='logo-title hidden sm:block  '>
-          <a href="/">
+      <header className=" static flex flex-row  border-b-2   ">
+          <div className='w-15 ml-10 mt-5 hidden lg:inline-block md:hidden'>
             <img src={logo} alt="logo" className="w-20"></img>
-            <h2 className="text-2xl  ">
-              Student<span className="text-green-400">Nest</span>
-            </h2>
-          </a>
           </div>
      
         
-        <nav className=" max-sm: nav font-semibold text-lg  flex flex-row">
+        <nav className=" ">
        
-          <div className="max-sm:absolute  sm:inline-flex max-w-full items-center">
-            <button
-              className="max-sm:p-[15px] max-sm:w-[230%] max-sm:ml-[15%]  max-sm:bg-red-700 max-sm:p-0 max-sm:text-4xl drop-shadow-2xl max-sm:rounded-full max-sm:p-2 max-sm:h-[5%] border-solid border-1 border-green-200 relative flex lg:w-[650%] flex-shrink items-center rounded-full py-2 pl-1  mt-5 h-[50%] lg:border-1 lg:border-green-200 lg:relative lg:flex lg:w-60 lg:flex-shrink lg:flex-grow-0 lg:items-center lg:rounded-full lg:border lg:drop-shadow-2xl lg:border-solid lg:border-2 border-red-200 lg:px-1 lg:py-1  lg:pl-2"
-              type="button"
-            >
-              <div className="block flex-shrink flex-grow overflow-hidden">Start your search</div>
-              <FontAwesomeIcon icon={faSearch} />
-              <div className="relative flex h-8 w-8  items-center justify-center rounded-full"></div>
-            </button>
-          </div>
-          <ul className="absolute max-sm:bg-green-200 max-sm:ml-[230%] max-sm:mt-[5%]  flex ml-[300%] lg:flex lg:items-center lg:ml-[160%]   ">
+          <div className="Search-bar 
+          
          
-            <li className=" p-4  border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer">
-              <Link>
-                <FontAwesomeIcon icon={faUser} onClick={handleShow} />
-              </Link>
-            </li>
-            <li className="p-4 border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-green-500 duration-200 cursor-pointer active">
-              <Link to="/">
-                <FontAwesomeIcon icon={faGlobe} className="fa-sharp fa-light" />
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <div className=" sm:w-3/12 flex justify-end ">
-          <a href=""></a>
-          <a href=""></a>
+         sm:w-[100%]
+        
+
+        
+          md:w-[150%]
+          md:p-2
+         
+          md:ml-[75%]
+          md:border-gray-400 
+          md:rounded-full
+          mt:mt-3
+        
+
+          lg:p-2 
+          flex flex-row lg:ml-[5%] 
+          lg:shadow-xl border
+          
+           lg:border-gray-400 
+           lg:rounded-full
+           lg:bg-emerald-500
+
+            lg:w-[230%] mt-3
+
+           
+            ">
+
+          <div className=" flex flex-col 
+          rounded-full 
+          
+          cursor-pointer group hover:bg-gray-100  w-[30%]  ">
+  <div>
+    <label className="md:text-xl lg:text-xs font-medium ml-10 mt-2 ">Where</label>
+  </div>
+  <div className="relative   ">
+    <input 
+      className="  md:placeholder:text-xl 
+     
+     
+       lg:ml-10 
+       lg:focus:outline-none rounded-full 
+       lg:text-xs 
+       lg:font-medium 
+       bg-transparent 
+       
+       lg:placeholder:text-sm 
+       lg:placeholder:font-normal "
+      type="text"
+      placeholder='Search destination'
+    />
+    
+  </div>
+</div>
+
+            <div className="flex flex-col rounded-full hover:bg-gray-100 cursor-pointer w-[30%] ">
+              
+              <label  className='md:text-xl md:mt-2  lg:text-xs font-medium ml-5 lg:mt-2  '>Who</label>
+             
+          
+
+            <span className=" md:hidden lg:inline-block text-slate-500 lg:text-sm lg:ml-5  ">Add guest</span>
+            </div>
+            <div className="flex flex-col rounded-full  hover:bg-gray-100 cursor-pointer w-[30%] ">
+            <label className='md:text-xl md:mt-2  lg:text-xs font-medium ml-5 lg:mt-2 '>Price</label>
+           <span className="md:hidden lg:inline-block text-slate-500 text-sm ml-5">Price ranking</span>
+           </div>
+           <div className='' >
+           <button className="bg-slate-950 border-2 borde rounded-full w-[100%] h-[100%]  text-slate-50  hover:bg-gray-500 p-1 mr-5   "><FontAwesomeIcon icon={faSearch}  className=""/></button>
+           </div>
+            
+           <div className=" absolute grid grid-cols-3 
+            sm:bg-amber-400
+            md:bg-cyan-500
+            md:ml-[115%]
+            
+          
+            lg:bg-green-700
+           gap-7
+            p-3 
+            lg:ml-[80%] 
+            mt-[5px] 
+            border 
+            border-x-2 rounded-full 
+            hover:shadow-xl 
+            cursor-pointer " >
+           <FontAwesomeIcon  icon={faBars} />
+        <FontAwesomeIcon  icon={faUser}/>
         </div>
+        
+          </div>
+         
+        </nav>
+       
         {showProfile ? (
         
         <div className="absolute bg-slate-50  mt-[75%] max-sm:mt-[125%] max-sm:ml-[180%]  max-sm:w-[70%] max-sm:p-5   lg:rounded lg:bg-slate-50 lg:w-[20%] lg:py-5 lg:absolute  lg:ml-[75%] lg:mt-[21%]   ">
