@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setShowProfile ,setShowLogine } from '../Redux/navbarSlice';
 
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import logo from './White_And_Black_Modern_Abstract_Beauty_Logo-removebg-preview.png';
+import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
 
 const Navbar = () => {
   const showProfile = useSelector((state) => state.navbar.showProfile);
@@ -31,9 +31,10 @@ const Navbar = () => {
 
   return (
     <>
-      <header className=" static flex flex-row  border-b-2   ">
-          <div className='w-15 ml-10 mt-5 hidden lg:inline-block md:hidden'>
-            <img src={logo} alt="logo" className="w-20"></img>
+      <header className=" static flex flex-row  border-b-2  ">
+          <div className='  w-15 ml-3 mt-2  '>
+            <img src={logo} alt="logo" className="  w-20 xl:w-[97%] lg:w-[10%]  "></img>
+           
           </div>
      
         
@@ -41,45 +42,55 @@ const Navbar = () => {
        
           <div className="Search-bar 
           
+         bg-yellow-300
+        sm:bg-red-400
+         xl:bg-orange-500
+          xl:w-[300%]
+          
+          xl:ml-[25%]
          
-         sm:w-[100%]
+         sm:w-[250%]
+         sm:ml-[20%]
+         sm:mb-2
+         sm:p-2
         
 
         
-          md:w-[150%]
+          md:w-[350%]
+         
+          md:mb-[5%]
           md:p-2
          
           md:ml-[75%]
           md:border-gray-400 
-          md:rounded-full
+          rounded-full
           mt:mt-3
-        
+          md:bg-slate-500
 
-          lg:p-2 
-          flex flex-row lg:ml-[5%] 
+          lg:p-1 
+          flex flex-row lg:ml-[30%] 
           lg:shadow-xl border
-          
+           lg:bg-green-500
            lg:border-gray-400 
-           lg:rounded-full
-           lg:bg-emerald-500
-
-            lg:w-[230%] mt-3
-
-           
+         
+            lg:w-[210%] mt-3
+            
             ">
 
           <div className=" flex flex-col 
           rounded-full 
           
-          cursor-pointer group hover:bg-gray-100  w-[30%]  ">
+          cursor-pointer group hover:bg-gray-100  lg:w-[30%]   ">
   <div>
-    <label className="md:text-xl lg:text-xs font-medium ml-10 mt-2 ">Where</label>
+    <label className="absolute sm:mt-2  md:text-xl md:mt-[10px] md:ml-5 xl:text-xl lg:relative  lg:text-xs font-medium lg:ml-10 lg:mt-2 ">Where</label>
   </div>
-  <div className="relative   ">
+  <div className="relative hidden  lg:inline-block    ">
     <input 
-      className="  md:placeholder:text-xl 
+      className="  md:placeholder:text-xl
+      xl:placeholder:text-2xl
+      
      
-     
+      xl:text-xl
        lg:ml-10 
        lg:focus:outline-none rounded-full 
        lg:text-xs 
@@ -97,37 +108,44 @@ const Navbar = () => {
 
             <div className="flex flex-col rounded-full hover:bg-gray-100 cursor-pointer w-[30%] ">
               
-              <label  className='md:text-xl md:mt-2  lg:text-xs font-medium ml-5 lg:mt-2  '>Who</label>
+              <label  className='md:text-xl md:mt-2 xl:text-xl  lg:text-xs font-medium ml-5 lg:mt-2  '>Who</label>
              
           
 
-            <span className=" md:hidden lg:inline-block text-slate-500 lg:text-sm lg:ml-5  ">Add guest</span>
+            <span className=" hidden lg:inline-block xl:text-xl text-slate-500 lg:text-sm lg:ml-5  ">Add guest</span>
             </div>
             <div className="flex flex-col rounded-full  hover:bg-gray-100 cursor-pointer w-[30%] ">
-            <label className='md:text-xl md:mt-2  lg:text-xs font-medium ml-5 lg:mt-2 '>Price</label>
-           <span className="md:hidden lg:inline-block text-slate-500 text-sm ml-5">Price ranking</span>
+            <label className='md:text-xl md:mt-2 xl:text-xl lg:text-xs font-medium ml-5 lg:mt-2 '>Price</label>
+           <span className="hidden lg:inline-block xl:text-xl  text-slate-500 text-sm ml-5">Price ranking</span>
            </div>
            <div className='' >
            <button className="bg-slate-950 border-2 borde rounded-full w-[100%] h-[100%]  text-slate-50  hover:bg-gray-500 p-1 mr-5   "><FontAwesomeIcon icon={faSearch}  className=""/></button>
            </div>
             
-           <div className=" absolute grid grid-cols-3 
+           <div className=" text-center absolute grid grid-cols-3 
+           gap-2
             sm:bg-amber-400
-            md:bg-cyan-500
-            md:ml-[115%]
+          
+            sm:ml-[83%]
+            md:mb-[5%]
+            md:ml-[75%]
+            
+            
             
           
             lg:bg-green-700
-           gap-7
+          
             p-3 
+            
             lg:ml-[80%] 
-            mt-[5px] 
+            lg:mt-[5px] 
             border 
             border-x-2 rounded-full 
+            
             hover:shadow-xl 
             cursor-pointer " >
-           <FontAwesomeIcon  icon={faBars} />
-        <FontAwesomeIcon  icon={faUser}/>
+           <FontAwesomeIcon   icon={faBars} />
+        <FontAwesomeIcon   icon={faUser}/>
         </div>
         
           </div>
