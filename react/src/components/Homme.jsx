@@ -2,7 +2,7 @@
 function Homme() {
   return (
     <>
-      <h1 className="max-sm:bg-green-600 max-sm:mt-[40%]">Hello world</h1>
+      <h1 className="">Hello world</h1>
     </>
   );
 }
