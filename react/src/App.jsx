@@ -6,6 +6,7 @@ import HommePage from './components/Homme';
 import Navbar from './components/NavBar/Navbar';
 import Nopages from './components/NoPages';
 import Login from './components/Forms/Login';
+import Singup from "./components/Forms/Singup";
 
 const App=()=>{
    return(
@@ -19,6 +20,7 @@ const App=()=>{
             <Route path="/" element={<HommePage />}/>
               <Route index element={<HommePage/>} />
               <Route path="Login" element={<Login/>} />
+              <Route path="Singup" element={<Singup/>}/>
               
            
               <Route path="*" element={<Nopages />} />
