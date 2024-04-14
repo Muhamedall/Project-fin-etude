@@ -5,14 +5,17 @@ import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setShowProfile  } from '../Redux/navbarSlice';
+import { setShowProfile  ,setShowLogine } from '../Redux/navbarSlice';
 
-
+import Logine from '../Forms/Login';
 import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
 
 const Navbar = () => {
   const showProfile = useSelector((state) => state.navbar.showProfile);
-  const showLogine=useSelector((state) => state.navbar.showLogine);
+  const showLogine =useSelector((state) => state.navbar.showLogine);
+  
+ 
+
 
   const dispatch = useDispatch();
 
@@ -21,6 +24,10 @@ const Navbar = () => {
     
     
     
+  };
+  const handleLogin = () => {
+   dispatch( setShowLogine(true)); 
+   dispatch(setShowProfile(false));
    
   };
  
@@ -28,7 +35,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className=" static flex flex-row  border-b-2  ">
+      <header className={ `${showLogine ? "opacity-50 pointer-events-none" : ""} " static flex flex-row  border-b-2  "`}>
           <div className=' absolute   w-15 lg:ml-3 mt-2  '>
             <img src={logo} alt="logo" className="w-10 lg:w-20    "></img>
            
@@ -162,7 +169,10 @@ const Navbar = () => {
             <div className="  ">
               <ul className='flex flex-col '>
                 <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
-                <Link to="Login">  Log in</Link>
+                
+
+               <button onClick={handleLogin}>Log in</button>
+                
                   </li>
                   <li  className='p-2 hover:bg-white border-b  cursor-pointer '>
                   <Link to="Singup">Sing up</Link>
@@ -182,14 +192,10 @@ const Navbar = () => {
         </div>
      
     ) : null}
-    {showLogine ? (
-      <>
-        
-        </>
-    ) : null}
+   
     
       </header>
-     
+      {showLogine? <Logine /> : null} {/* Conditionally render Logine component */}
     </>
   );
 };
