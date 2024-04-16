@@ -1,18 +1,20 @@
 
-import { Link } from 'react-router-dom';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setShowProfile  ,setShowLogine } from '../Redux/navbarSlice';
+import { setShowProfile  ,setShowLogine  ,setShowInscription} from '../Redux/navbarSlice';
 
 import Logine from '../Forms/Login';
 import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
+import Singup from '../Forms/Singup';
 
 const Navbar = () => {
   const showProfile = useSelector((state) => state.navbar.showProfile);
   const showLogine =useSelector((state) => state.navbar.showLogine);
+  const showInscription =useSelector((state) => state.navbar.showInscription);
   
  
 
@@ -31,7 +33,11 @@ const Navbar = () => {
    
   };
  
+  const handelInscription =()=>{
+    dispatch(setShowInscription(true));
+    dispatch(setShowProfile(false))
 
+  }
 
   return (
     <>
@@ -175,7 +181,7 @@ const Navbar = () => {
                 
                   </li>
                   <li  className='p-2 hover:bg-white border-b  cursor-pointer '>
-                  <Link to="Singup">Sing up</Link>
+                  <button onClick={handelInscription}>Sing up</button>
                   </li>
                   <li  className='p-2 mt-2 hover:bg-white cursor-pointer '>
                     <a className="#">Help Center</a> 
@@ -190,12 +196,14 @@ const Navbar = () => {
             
           </div>
         </div>
+        
      
     ) : null}
    
     
       </header>
       {showLogine? <Logine /> : null} {/* Conditionally render Logine component */}
+      {showInscription ? <Singup/> : null} 
     </>
   );
 };

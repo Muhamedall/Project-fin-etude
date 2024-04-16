@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   showProfile: false,
-  showLogine: false
+  showLogine: false,
+  showInscription :false
 };
 
 const navbarSlice = createSlice({
@@ -16,10 +17,13 @@ const navbarSlice = createSlice({
     setShowLogine (state ,action){
       state.showLogine = action.payload;
 
+    },
+    setShowInscription (state ,action){
+      state.showInscription=action.payload
     }
   },
 });
 
-export const { setShowProfile ,setShowLogine } = navbarSlice.actions;
+export const { setShowProfile ,setShowLogine ,setShowInscription } = navbarSlice.actions;
 
 export default navbarSlice.reducer;
