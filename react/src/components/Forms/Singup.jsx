@@ -82,10 +82,15 @@ const Singup = () => {
 
     const isValid = validateForm();
     const axios =axiosClient.defaults
-    console.log(axios)
+  
 
     if (isValid) {
-      // Form submission logic goes here
+      console.log("Full Name:", nameRef.current.value);
+      console.log("Email:", emailRef.current.value);
+      console.log("Password:", passwordRef.current.value);
+      console.log("Date of Birth:", selectedDate);
+      console.log("City:", cityRef.current.value);
+      console.log(axios)
     }
   };
 
