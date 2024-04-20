@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 
-import { axiosClient } from "../../api/api";
+
 
 export default function Logine() {
     const emailRef = useRef("");
@@ -41,12 +41,11 @@ export default function Logine() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validateForm();
-        const axios =axiosClient.defaults
 
         if (isValid) {
             console.log("Email:", emailRef.current.value);
       console.log("Password:", passwordRef.current.value);
-      console.log(axios)
+     
         }
     };
 
