@@ -1,11 +1,14 @@
-const Student =()=>{
 
-    return(
-        <>
-        <h1>Hello my studenet </h1>
-        
-        
-        </>
-    )
+function Student() {
+
+    
+  
+  return (
+    <div className="">
+        <h1>Hello studen</h1>
+     
+    </div>
+  );
 }
+
 export default Student;

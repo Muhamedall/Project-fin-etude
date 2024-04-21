@@ -51,7 +51,7 @@ export default function Logine() {
 
     return (
         <>
-            <div  className=" ml-[10%]  lg:w-full max-w-xs absolute lg:ml-[35%]  lg:mt-[5%]  lg:h-full shadow-zinc-900  ">
+            <div  className=" ml-[10%]  lg:w-full max-w-xs absolute  z-40  lg:ml-[35%]  lg:mt-[5%]  lg:h-full shadow-zinc-900  ">
                 <form className="p-[5%]  bg-white shadow-md rounded lg:px-10 lg:p-[15%]  lg:mb-4" >
                     <nav className="flex flex-wrap gap-2">
                         <div>

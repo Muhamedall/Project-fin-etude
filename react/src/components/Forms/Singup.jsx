@@ -96,8 +96,8 @@ const Singup = () => {
 
   return (
     <>
-      <div className="absolute ml-[5%] shadow-zinc-900 lg:w-[50%]  lg:ml-[25%] lg:mt-[5%] lg:h-full ">
-        <form className=" p-[5%] bg-white shadow-md rounded lg:px-10   ">
+      <div className="absolute ml-[5%] z-40  shadow-zinc-900 lg:w-[50%]  lg:ml-[25%] lg:mt-[5%] lg:h-full ">
+        <form className=" p-[5%]  shadow-md rounded-2xl lg:px-10 bg-gray-100">
          
           <div className="  lg:grid lg:grid-cols-2 lg:gap-4    space-x">
             <div className="lg:mb-4">

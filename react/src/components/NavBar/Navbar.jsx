@@ -41,7 +41,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={ `${showLogine ? "opacity-50 pointer-events-none" : ""} " static flex flex-row  border-b-2  "`}>
+      <header className={ `${showLogine ? "opacity-50 pointer-events-none bg-neutral-400 " : ""} " static flex flex-row  border-b-2  "`}>
           <div className=' absolute   w-15 lg:ml-3 mt-2  '>
             <img src={logo} alt="logo" className="w-10 lg:w-20    "></img>
            
@@ -170,7 +170,7 @@ const Navbar = () => {
        
         {showProfile ? (
         
-        <div className="absolute  mt-[10%] py-2 ml-[60%]   rounded border bg-slate-50 lg:w-[20%] lg:py-5    lg:ml-[70%] lg:mt-[5%] shadow-xl shadow-slate-200 ">
+        <div className="absolute z-40  mt-[10%] py-2 ml-[60%]   rounded border bg-slate-50 lg:w-[20%] lg:py-5    lg:ml-[70%] lg:mt-[5%] shadow-xl shadow-slate-200 ">
           <div className="rounded overflow-hidden ">
             <div className="  ">
               <ul className='flex flex-col '>
