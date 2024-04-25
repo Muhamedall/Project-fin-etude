@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Import the styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { axiosClient } from "../../api/api";
+
 
 const Singup = () => {
   const nameRef=useRef("");
@@ -81,7 +81,7 @@ const Singup = () => {
     e.preventDefault();
 
     const isValid = validateForm();
-    const axios =axiosClient.defaults
+   
   
 
     if (isValid) {
@@ -90,7 +90,7 @@ const Singup = () => {
       console.log("Password:", passwordRef.current.value);
       console.log("Date of Birth:", selectedDate);
       console.log("City:", cityRef.current.value);
-      console.log(axios)
+     
     }
   };
 

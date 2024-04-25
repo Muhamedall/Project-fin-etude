@@ -41,9 +41,9 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={ `${showLogine ? "opacity-50 pointer-events-none bg-neutral-400 " : ""} " static flex flex-row  border-b-2  "`}>
+      <header className={ `${showLogine || showInscription ? "opacity-50 pointer-events-none " : ""} " static flex flex-row  border-b-2  "`}>
           <div className=' absolute   w-15 lg:ml-3 mt-2  '>
-            <img src={logo} alt="logo" className="w-10 lg:w-20    "></img>
+            <img src={logo} alt="logo" className="w-10 lg:w-20"></img>
            
           </div>
      

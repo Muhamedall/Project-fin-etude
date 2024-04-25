@@ -1,9 +1,12 @@
-import { useRef, useState } from "react";
-
-
+import React ,{ useRef, useState } from "react";
+import {  Navigate } from 'react-router-dom';
+import axios from '../../api/api';
+import { useAuth } from '../../authentication/AuthContext';
 
 
 export default function Logine() {
+    const { setUser, csrfToken } = useAuth();
+	const [error, setError] = React.useState(null);
     const emailRef = useRef("");
     const passwordRef = useRef("");
     const [errorMessages, setErrorMessages] = useState({
@@ -38,15 +41,32 @@ export default function Logine() {
         return isValid;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  async (e) => {
         e.preventDefault();
         const isValid = validateForm();
-
+        const body = {
+			email: emailRef.current.value,
+			password: passwordRef.current.value,
+		};
+        await csrfToken();
         if (isValid) {
-            console.log("Email:", emailRef.current.value);
-      console.log("Password:", passwordRef.current.value);
+            try {
+                const resp = await axios.post('/login', body);
+                if (resp.status === 200) {
+                    setUser(resp.data.user);
+                    return <Navigate to="/Student" />;
+                }
+            } catch (error) {
+                if (error.response.status === 401) {
+                    setError(error.response.data.message);
+                }
+            }
+            
      
         }
+      
+
+       
     };
 
     return (
@@ -87,7 +107,7 @@ export default function Logine() {
                                Sing up
                             </a>
                             
-                            
+                            <div>{error}</div>
                         </div>
                     </div>
                 </form>

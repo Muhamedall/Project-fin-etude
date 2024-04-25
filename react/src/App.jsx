@@ -8,6 +8,7 @@ import Nopages from './components/NoPages';
 import Login from './components/Forms/Login';
 import Singup from "./components/Forms/Singup";
 import Studente from './components/Student';
+import ProtectedLayout from './components/ProtectedLayout';
 
 const App=()=>{
    return(
@@ -21,6 +22,7 @@ const App=()=>{
             <Route path="/" element={<HommePage />}/>
               <Route index element={<HommePage/>} />
               <Route path="Login" element={<Login/>} />
+              <Route path="ProtectedLayout" element={<ProtectedLayout/>} />
               <Route path="Singup" element={<Singup/>}/>
               <Route path="Student" element={<Studente/>}/>
               
