@@ -1,12 +1,16 @@
-import React ,{ useRef, useState } from "react";
-import {  Navigate } from 'react-router-dom';
-import axios from '../../api/api';
-import { useAuth } from '../../authentication/AuthContext';
+import  { useRef, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 
+import axios from '../../api/api';
+import {   setShowLogine } from '../Redux/navbarSlice';
+
+import { useDispatch  } from "react-redux";
 
 export default function Logine() {
-    const { setUser, csrfToken } = useAuth();
-	const [error, setError] = React.useState(null);
+  
+    const dispatch =useDispatch();
+
+	const navigate =useNavigate();
     const emailRef = useRef("");
     const passwordRef = useRef("");
     const [errorMessages, setErrorMessages] = useState({
@@ -44,22 +48,19 @@ export default function Logine() {
     const handleSubmit =  async (e) => {
         e.preventDefault();
         const isValid = validateForm();
-        const body = {
-			email: emailRef.current.value,
-			password: passwordRef.current.value,
-		};
-        await csrfToken();
+       
+       
         if (isValid) {
-            try {
-                const resp = await axios.post('/login', body);
-                if (resp.status === 200) {
-                    setUser(resp.data.user);
-                    return <Navigate to="/Student" />;
-                }
-            } catch (error) {
-                if (error.response.status === 401) {
-                    setError(error.response.data.message);
-                }
+            console.log("is good")
+            console.log("Axios request headers:", axios.defaults.headers);
+
+            try{
+                 await axios.post('/login' ,{email :emailRef.current.value , password :passwordRef.current.value});
+                 dispatch(setShowLogine(false))
+                 navigate('/Student');
+            }catch(e){
+                console.log("Is Error " +e);
+
             }
             
      
@@ -107,7 +108,7 @@ export default function Logine() {
                                Sing up
                             </a>
                             
-                            <div>{error}</div>
+                            
                         </div>
                     </div>
                 </form>

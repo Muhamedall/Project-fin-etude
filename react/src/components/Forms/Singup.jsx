@@ -1,32 +1,28 @@
-import  { useRef, useState } from "react";
+import { useRef, useState } from "react";
+import axios from '../../api/api';
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import the styles
+import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
-
 const Singup = () => {
-  const nameRef=useRef("");
+  const nameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
-
   const acceptConditionRef = useRef(false);
-  const cityRef =useRef("");
-  
-
+  const cityRef = useRef("");
   const [selectedDate, setSelectedDate] = useState(null);
-
   const [errorMessages, setErrorMessages] = useState({
-    fullname:"",
-    
+    fullname: "",
     email: "",
     password: "",
     date: "",
-    city:"",
+    city: "",
     accept: "",
   });
 
   const validateForm = () => {
+  
     const fields = [
       { ref: nameRef, name: "fullname", message: "Please enter Full Name." },
       { ref: emailRef, name: "email", message: "Email is required." },
@@ -77,20 +73,40 @@ const Singup = () => {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const isValid = validateForm();
-   
-  
-
+    
     if (isValid) {
-      console.log("Full Name:", nameRef.current.value);
-      console.log("Email:", emailRef.current.value);
-      console.log("Password:", passwordRef.current.value);
-      console.log("Date of Birth:", selectedDate);
-      console.log("City:", cityRef.current.value);
-     
+      try {
+        const response = await axios.post('/register', {
+          name: nameRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          dateOfBirth: selectedDate,
+          city: cityRef.current.value,
+        });
+        console.log("User registered successfully:", response.data);
+        // Reset form fields and error messages upon successful registration
+        nameRef.current.value = "";
+        emailRef.current.value = "";
+        passwordRef.current.value = "";
+        setSelectedDate(null);
+        cityRef.current.value = "";
+        acceptConditionRef.current.checked = false;
+        setErrorMessages({
+          fullname: "",
+          email: "",
+          password: "",
+          date: "",
+          city: "",
+          accept: "",
+        });
+      } catch (error) {
+        console.log("Error:", error.response.data);
+        // Handle error response from the server, update error messages if needed
+        setErrorMessages(error.response.data.errors);
+      }
     }
   };
 
@@ -107,7 +123,7 @@ const Singup = () => {
                 className={`${errorMessages.email ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                 id="fullname"
                 type="text"
-                name="fullname"
+                name="name"
               />
               {errorMessages.fullname&& <p style={{ color: "red" }}>{errorMessages.fullname}</p>}
             </div>
@@ -145,7 +161,7 @@ const Singup = () => {
                 onChange={(date) => setSelectedDate(date)}
                 className={`${errorMessages.date ? "border-red-600 " : ""} bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                 placeholderText="Select date"
-                name="date"
+                name="dateOfBirth"
               />
               
               {errorMessages.date && <p style={{ color: "red" }}>{errorMessages.date}</p>}
