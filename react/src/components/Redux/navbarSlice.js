@@ -1,9 +1,12 @@
+// navbarSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   showProfile: false,
   showLogine: false,
-  showInscription :false
+  showInscription: false,
+  showMenuOfuser: false,
+  loggedIn: false, // Add a new state variable to track login status
 };
 
 const navbarSlice = createSlice({
@@ -13,17 +16,28 @@ const navbarSlice = createSlice({
     setShowProfile(state, action) {
       state.showProfile = action.payload;
     },
-  
-    setShowLogine (state ,action){
+    setShowLogine(state, action) {
       state.showLogine = action.payload;
-
     },
-    setShowInscription (state ,action){
-      state.showInscription=action.payload
-    }
+    setShowInscription(state, action) {
+      state.showInscription = action.payload;
+    },
+    setShowMenuOfuser(state, action) {
+      state.showMenuOfuser = action.payload;
+    },
+    setLoggedIn(state, action) {
+      
+      state.loggedIn = action.payload;
+    },
   },
 });
 
-export const { setShowProfile ,setShowLogine ,setShowInscription } = navbarSlice.actions;
+export const {
+  setShowProfile,
+  setShowLogine,
+  setShowInscription,
+  setShowMenuOfuser,
+  setLoggedIn,
+} = navbarSlice.actions;
 
 export default navbarSlice.reducer;

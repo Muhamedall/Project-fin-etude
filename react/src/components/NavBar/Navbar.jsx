@@ -1,13 +1,12 @@
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-
 import { useSelector, useDispatch } from 'react-redux';
-import { setShowProfile  ,setShowLogine  ,setShowInscription} from '../Redux/navbarSlice';
+import { setShowProfile  ,setShowLogine  ,setShowInscription ,setLoggedIn} from '../Redux/navbarSlice';
 
 import Logine from '../Forms/Login';
+import MenuOfuser from '../MenuOfuser';
 import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
 import Singup from '../Forms/Singup';
 
@@ -15,6 +14,8 @@ const Navbar = () => {
   const showProfile = useSelector((state) => state.navbar.showProfile);
   const showLogine =useSelector((state) => state.navbar.showLogine);
   const showInscription =useSelector((state) => state.navbar.showInscription);
+  const showMenuOfuser=useSelector((state)=>state.navbar.showMenuOfuser);
+  const loggedIn = useSelector((state) => state.navbar.loggedIn);
   
  
 
@@ -28,8 +29,14 @@ const Navbar = () => {
     
   };
   const handleLogin = () => {
+  
    dispatch( setShowLogine(true)); 
    dispatch(setShowProfile(false));
+   if(setLoggedIn(true) ){
+    dispatch(showProfile(false))
+
+   }
+   
    
   };
  
@@ -132,8 +139,6 @@ const Navbar = () => {
            </div>
             
            <div className=" text-center absolute grid grid-cols-3
-           
-          
            lg:gap-12
            ml-[75%]
            
@@ -199,11 +204,13 @@ const Navbar = () => {
         
      
     ) : null}
-   
+        
     
       </header>
-      {showLogine? <Logine /> : null} {/* Conditionally render Logine component */}
+      {showLogine? <Logine /> : null} 
       {showInscription ? <Singup/> : null} 
+      {showMenuOfuser ? <MenuOfuser/> :null}
+      {loggedIn ? <MenuOfuser />  : null}
     </>
   );
 };

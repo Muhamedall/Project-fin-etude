@@ -9,6 +9,7 @@ import Login from './components/Forms/Login';
 import Singup from "./components/Forms/Singup";
 import Studente from './components/Student';
 import ProtectedLayout from './components/ProtectedLayout';
+import MenuOfuser from "./components/MenuOfuser";
 
 const App=()=>{
    return(
@@ -23,6 +24,7 @@ const App=()=>{
               <Route index element={<HommePage/>} />
               <Route path="Login" element={<Login/>} />
               <Route path="ProtectedLayout" element={<ProtectedLayout/>} />
+              <Route path="MenuOfuser" element={<MenuOfuser/>} />
               <Route path="Singup" element={<Singup/>}/>
               <Route path="Student" element={<Studente/>}/>
               

@@ -5,9 +5,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { format } from 'date-fns'
-import {useNavigate} from 'react-router-dom';
+
+import { setShowLogine  ,setShowInscription} from '../Redux/navbarSlice';
+import { useDispatch  } from "react-redux";
 const Signup = () => {
-  const navigate =useNavigate();
+  const [loginSuccess, setLoginSuccess] = useState(false); 
+  
+  const dispatch = useDispatch();
+ 
   const nameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -75,7 +80,10 @@ const Signup = () => {
           dateOfBirth: formattedDate, // Ensure date of birth value is correctly populated
           city: cityRef.current.value, // Ensure city value is correctly populated
         });
-        navigate('/Login');
+  
+        dispatch( setShowLogine(true)); 
+        dispatch(setShowInscription(false));
+        setLoginSuccess(true);
         console.log("User registered successfully:", response.data);
         // Reset form fields and error messages upon successful registration
         nameRef.current.value = "";
@@ -88,12 +96,18 @@ const Signup = () => {
           ...prevErrors,
           fullname: "", // Reset fullname error to empty string
         }));
+  
+        // Display success message for 3 seconds
+        setTimeout(() => {
+          setLoginSuccess(false);
+        }, 3000);
       } catch (error) {
         console.log("Error:", error.response.data);
         setErrorMessages(error.response.data.errors);
       }
     }
   };
+  
   
   return (
     <>
@@ -183,6 +197,10 @@ const Signup = () => {
         </form>
       </div>
       <footer></footer>
+      {loginSuccess &&  <div className="absolute z-50 mb-[15%] ml-[2%] lg:w-[30%] rounded-lg lg:ml-[30%] bg-green-100 border-l-4 border-green-500 text-green-700 lg:p-4" role="alert">
+    <p className="font-bold">Success!</p>
+    <p>You have successfully logged in.</p>
+  </div>}
     </>
   );
 };

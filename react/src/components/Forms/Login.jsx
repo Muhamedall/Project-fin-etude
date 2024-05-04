@@ -1,7 +1,7 @@
 import  { useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from '../../api/api';
-import { setShowLogine } from '../Redux/navbarSlice';
+import { setShowLogine ,setShowMenuOfuser  ,setShowInscription ,setLoggedIn} from '../Redux/navbarSlice';
 import { useDispatch } from "react-redux";
 
 export default function Logine() {
@@ -51,10 +51,14 @@ export default function Logine() {
         if (isValid) {
             try {
                 await axios.post('/login', { email: emailRef.current.value, password: passwordRef.current.value });
-                dispatch(setShowLogine(false));
                 setErrorlogine(false);
-                setLoginSuccess(true); // Set login success state to true
-               // Reset login success state after 3 seconds
+               
+                dispatch(setShowLogine(false));
+                dispatch(setShowInscription(false))
+                dispatch(setLoggedIn(true))
+                dispatch(setShowMenuOfuser(true))
+                
+               
                
                 navigate('/Student');
             } catch (e) {
