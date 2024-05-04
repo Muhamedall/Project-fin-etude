@@ -8,23 +8,35 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-
 class UserController extends Controller
 {
     /**
-     * Return a list of users.
+     * Handle user registration.
      *
      * @param  Request  $request
      * @return JsonResponse
+     * @throws ValidationException
      */
-    
-    public function index(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        // Fetch all users
-        $users = User::all();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+          
+            'dateOfBirth' => 'nullable|date',
+            'city' => 'nullable|string|max:255',
+        ]);
 
-        // Return JSON response with users data
-        return response()->json($users);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'city' => $request->city,
+            'dateOfBirth' => $request->dateOfBirth,
+        ]);
+
+        return response()->json($user, 201);
     }
 
     /**
@@ -36,32 +48,22 @@ class UserController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        // Validate request data
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Attempt to log in the user
         if (Auth::attempt($request->only('email', 'password'))) {
-            // Authentication was successful
             $user = Auth::user();
-            // Generate a token for the authenticated user
             $token = $user->createToken('authToken')->plainTextToken;
-            // Return user data and token
             return response()->json([
                 'user' => $user,
                 'token' => $token,
             ]);
         }
 
-        // Authentication failed
         throw ValidationException::withMessages([
             'email' => ['The provided credentials are incorrect.'],
         ]);
     }
-  
-
-
-    
 }

@@ -1,8 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,7 +14,9 @@ class DatabaseSeeder extends Seeder
          \App\Models\User::factory()->create([
             'name' => 'Mohamed Allaoui',
              'email' => 'mohamedallaoui@gmail.com',
-             'password'=>'123456789'
+             'password'=>'123456789',
+             'dateOfBirth'=>'2004-05-05', // Date format corrected
+             'city'=>'Tanger',
         ]);
     }
 }
