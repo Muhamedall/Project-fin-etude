@@ -10,6 +10,7 @@ import Singup from "./components/Forms/Singup";
 import Studente from './components/Student';
 import ProtectedLayout from './components/ProtectedLayout';
 import MenuOfuser from "./components/MenuOfuser";
+import Account from './components/user-authentified/Account'
 
 const App=()=>{
    return(
@@ -27,7 +28,7 @@ const App=()=>{
               <Route path="MenuOfuser" element={<MenuOfuser/>} />
               <Route path="Singup" element={<Singup/>}/>
               <Route path="Student" element={<Studente/>}/>
-              
+              <Route path="Account" element={<Account/>}/>
            
               <Route path="*" element={<Nopages />} />
           

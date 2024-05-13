@@ -1,50 +1,50 @@
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { setShowProfile  ,setShowLogine  ,setShowInscription ,setLoggedIn} from '../Redux/navbarSlice';
-
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { setShowProfile, setShowLogine, setShowInscription, setShowMenuOfuser } from '../Redux/navbarSlice';
 import Logine from '../Forms/Login';
-import MenuOfuser from '../MenuOfuser';
-import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
 import Singup from '../Forms/Singup';
+import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
 
 const Navbar = () => {
+  const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const showProfile = useSelector((state) => state.navbar.showProfile);
-  const showLogine =useSelector((state) => state.navbar.showLogine);
-  const showInscription =useSelector((state) => state.navbar.showInscription);
-  const showMenuOfuser=useSelector((state)=>state.navbar.showMenuOfuser);
-  const loggedIn = useSelector((state) => state.navbar.loggedIn);
-  
+  const showLogine = useSelector((state) => state.navbar.showLogine);
+  const showInscription = useSelector((state) => state.navbar.showInscription);
+  const showMenuOfuser = useSelector((state) => state.navbar.showMenuOfuser);
  
-
-
+  
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (!loggedIn ) {
+      
+      dispatch(setShowProfile(true));
+    }
+  }, [loggedIn]);
 
   const handleShow = () => {
-    dispatch(setShowProfile(true));
-    
-    
-    
+    if (loggedIn) {
+      dispatch(setShowMenuOfuser(true));
+      dispatch(setShowProfile(false));
+    } else {
+      dispatch(setShowMenuOfuser(false));
+      dispatch(setShowProfile(true));
+    }
   };
+
   const handleLogin = () => {
-  
-   dispatch( setShowLogine(true)); 
-   dispatch(setShowProfile(false));
-   if(setLoggedIn(true) ){
-    dispatch(showProfile(false))
-
-   }
-   
-   
+    dispatch(setShowLogine(true));
+    dispatch(setShowProfile(false));
   };
- 
-  const handelInscription =()=>{
-    dispatch(setShowInscription(true));
-    dispatch(setShowProfile(false))
 
-  }
+  const handelInscription = () => {
+    dispatch(setShowInscription(true));
+    dispatch(setShowProfile(false));
+  };
+
 
   return (
     <>
@@ -205,12 +205,56 @@ const Navbar = () => {
      
     ) : null}
         
-    
+        {showMenuOfuser ? (
+        <div className="absolute z-40 mt-[10%] py-2 ml-[60%] rounded border bg-slate-50 lg:w-[20%] lg:py-5 lg:ml-[70%] lg:mt-[5%] shadow-xl shadow-slate-200 ">
+         <div className="rounded overflow-hidden ">
+            <div className="  ">
+              <ul className='flex flex-col '>
+                <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
+                
+
+             <Link to="Account" > Account</Link>
+                
+                  </li>
+                  <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
+                
+
+               <button >Trips</button>
+                
+                  </li>
+                  <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
+                
+
+               <button >Wishlist</button>
+                
+                  </li>
+                  <li className='p-2 hover:bg-white border-b font-medium cursor-pointer ' >
+                
+
+               <button >Messages</button>
+                
+                  </li>
+                  <li  className='p-2 mt-2 hover:bg-white   cursor-pointer '>
+                  <button >Help Center</button>
+                  </li>
+                  <li  className='p-2 mt-2 hover:bg-white cursor-pointer '>
+                    <a className="#">Log out</a> 
+                  </li>
+                 
+               
+              </ul>
+              
+              
+            </div>
+           
+            
+          </div>
+        </div>
+      ) : null}
       </header>
-      {showLogine? <Logine /> : null} 
-      {showInscription ? <Singup/> : null} 
-      {showMenuOfuser ? <MenuOfuser/> :null}
-      {loggedIn ? <MenuOfuser />  : null}
+      {showLogine ? <Logine /> : null}
+      {showInscription ? <Singup /> : null}
+      
     </>
   );
 };

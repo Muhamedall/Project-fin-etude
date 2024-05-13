@@ -1,35 +1,24 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const fetchUsers = createAsyncThunk(
-  'users/fetchUsers',
-  async () => {
-    const response = await fetch('http://localhost:8000/api/users');
-    return await response.json();
-  }
-);
-
-const usersSlice = createSlice({
-  name: 'users',
-  initialState: {
-    users: [],
-    status: 'idle',
-    error: null,
+const initialState = {
+  user: {
+  
+    email: '',
   },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchUsers.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.users = action.payload;
-      })
-      .addCase(fetchUsers.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      });
+};
+
+export const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
-export default usersSlice.reducer;
+export const { setUser } = userSlice.actions;
+
+export const selectUser = (state) => state.user.user;
+
+export default userSlice.reducer;

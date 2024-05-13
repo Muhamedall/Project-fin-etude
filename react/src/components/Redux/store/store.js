@@ -1,11 +1,13 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import navbarReducer from '../navbarSlice';
-import usersReducer from '../usersSlice'; 
+import userReducer from '../usersSlice';
+
 
 export default configureStore({
   reducer: {
     navbar: navbarReducer,
-    users: usersReducer, 
+    user: userReducer,
+   
   },
 });
