@@ -218,8 +218,8 @@ const Navbar = () => {
                   </li>
                   <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
                 
-
-               <button >Trips</button>
+                  <Link to="ManageListing" > Manage my listings</Link>
+               
                 
                   </li>
                   <li className='p-2 hover:bg-white font-medium cursor-pointer ' >

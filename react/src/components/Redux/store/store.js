@@ -7,7 +7,7 @@ import userReducer from '../usersSlice';
 export default configureStore({
   reducer: {
     navbar: navbarReducer,
-    user: userReducer,
+    users: userReducer,
    
   },
 });

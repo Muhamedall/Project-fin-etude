@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../api/api';
 import { setShowLogine, setShowInscription, setLoggedIn, setShowProfile } from '../Redux/navbarSlice';
 import { useDispatch } from "react-redux";
-import {setUser} from '../Redux/usersSlice';
 
 const Logine = () => {
 
@@ -67,7 +66,6 @@ const Logine = () => {
         dispatch(setShowInscription(false));
         dispatch(setShowProfile(false));
         dispatch(setLoggedIn(true));
-        dispatch(setUser(emailRef.current.value ))
         localStorage.setItem('isLoggedIn', 'true');
        
         setLoginSuccess(true);

@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
-import axios from '../../api/api';
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { format } from 'date-fns'
-
+import { setUser } from "../Redux/usersSlice";
+import { registerUser } from '../Redux/usersSlice';
 import { setShowLogine  ,setShowInscription} from '../Redux/navbarSlice';
 import { useDispatch  } from "react-redux";
 const Signup = () => {
@@ -73,19 +74,20 @@ const Signup = () => {
     if (isValid) {
       try {
         const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
-        const response = await axios.post('/register', {
+        const response = await dispatch(registerUser({
           name: nameRef.current.value,
           email: emailRef.current.value,
           password: passwordRef.current.value,
-          dateOfBirth: formattedDate, // Ensure date of birth value is correctly populated
-          city: cityRef.current.value, // Ensure city value is correctly populated
-        });
-  
-        dispatch( setShowLogine(true)); 
+          dateOfBirth: formattedDate,
+          city: cityRef.current.value,
+        }));
+
+        dispatch(setUser({ name: nameRef.current.value, email: emailRef.current.value }));
+        dispatch(setShowLogine(true)); 
         dispatch(setShowInscription(false));
         setLoginSuccess(true);
-        console.log("User registered successfully:", response.data);
-        // Reset form fields and error messages upon successful registration
+        console.log("User registered successfully:", response.payload);
+       
         nameRef.current.value = "";
         emailRef.current.value = "";
         passwordRef.current.value = "";

@@ -1,19 +1,16 @@
 import { useSelector } from "react-redux";
-import { selectUser } from "../Redux/usersSlice";
 
 const Account=()=>{
   
-  const user = useSelector(selectUser); // Use the selectUser selector to access user data
-
-  console.log("User data:", JSON.stringify(user));
-
+  const user = useSelector((state) => state.users.user);
+  console.log("the user is "+JSON.stringify(user) )
    return(
     <>
     
     <div className="ml-[2%] lg:ml-[10%] lg:mt-[5%]">
    
     <h1 className=" text-5xl font-bold" >Account</h1>
-    <h2 className="font-bold">Welcom mr </h2>
+    <h2 className="font-bold">Welcom mr {user.name} </h2>
     <div className=" flex flex-col gap-10  lg:flex lg:flex-row  lg:gap-5 mt-[5%]">
     <div className="max-w-sm rounded overflow-hidden shadow-lg ">
   <div className="px-6 py-4">
