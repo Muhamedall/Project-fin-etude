@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Listing extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'title', // Add any other attributes you want to allow mass assignment for here
+        'location',
+        'price',
+        'images',
+        'date_debut',
+        'date_fin',
+        'people',
+        'rooms',
+    ];
+    
 }

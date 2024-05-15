@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from 'axios';
+import axios from '../../api/api';
 
 const AddListing = () => {
   const [selectedDateDebut, setSelectedDateDebut] = useState(null);
@@ -15,24 +15,6 @@ const AddListing = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [people, setPeople] = useState(0);
   const [rooms, setRooms] = useState(0);
-
-  // Fetch CSRF token on component mount
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-        console.log('CSRF token fetched');
-      } catch (error) {
-        console.error('Error fetching CSRF token:', error);
-      }
-    };
-    fetchCsrfToken();
-  }, []);
-
-  const getCsrfToken = () => {
-    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-    return match ? match[1] : null;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,18 +30,10 @@ const AddListing = () => {
       formData.append(`images[${index}]`, image);
     });
 
-    const csrfToken = getCsrfToken();
-
-    if (!csrfToken) {
-      console.error('CSRF token not found');
-      return;
-    }
-
     try {
-      const response = await axios.post('http://localhost:8000/api/listings', formData, {
+      const response = await axios.post('api/listings', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-XSRF-TOKEN': csrfToken,
         },
       });
       console.log('Listing added:', response.data);

@@ -16,6 +16,8 @@ class VerifyCsrfToken extends Middleware
         '/login', // Add the /login route here
         '/register',
        
-        '/listings'
+        'api/listings',
+        'api/dataListings',
+
     ];
 }

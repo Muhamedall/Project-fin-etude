@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 const axios = Axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: "http://localhost:8000", // Ensure this matches your API prefix
     withCredentials: true,
 });
 
@@ -9,6 +9,7 @@ const axios = Axios.create({
 async function fetchCsrfToken() {
     try {
         const response = await axios.get('/csrf-token');
+        console.log('CSRF cookie set:', response);
         const csrfToken = response.data.csrfToken;
         // Set CSRF token in Axios headers
         axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
