@@ -15,5 +15,7 @@ class VerifyCsrfToken extends Middleware
         // Exclude any routes that should bypass CSRF protection
         '/login', // Add the /login route here
         '/register',
+       
+        '/listings'
     ];
 }

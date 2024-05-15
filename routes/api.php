@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EtudiantControlloller;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'store']);
+
+Route::post('/listings', [ListingController::class, 'store']);
+
 

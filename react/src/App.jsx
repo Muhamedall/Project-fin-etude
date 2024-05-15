@@ -12,6 +12,9 @@ import ProtectedLayout from './components/ProtectedLayout';
 import MenuOfuser from "./components/MenuOfuser";
 import Account from './components/user-authentified/Account';
 import ManageListing from './components/listings/ManageListings';
+import AddListing from './components/listings/AddListing';
+import Dashboard from './components/listings/Dashboard';
+
 
 const App=()=>{
    return(
@@ -31,6 +34,8 @@ const App=()=>{
               <Route path="Student" element={<Studente/>}/>
               <Route path="Account" element={<Account/>}/>
               <Route path="ManageListing" element={<ManageListing/>}/>
+              <Route path="AddListing" element={<AddListing/>}/>
+              <Route path="Dashboard" element={<Dashboard/>}/>
            
               <Route path="*" element={<Nopages />} />
           
