@@ -7,14 +7,12 @@ use Illuminate\Http\Request;
 
 class ListingController extends Controller
 {
-
-
     public function index()
     {
         $listings = Listing::all();
         return response()->json($listings);
     }
-    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -29,7 +27,6 @@ class ListingController extends Controller
             'rooms' => 'required|integer|min:1',
         ]);
 
-        // Handle file uploads
         $images = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
