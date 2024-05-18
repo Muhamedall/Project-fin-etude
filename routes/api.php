@@ -27,6 +27,7 @@ Route::post('/register', [UserController::class, 'store']);
 
 Route::post('/listings', [ListingController::class, 'store']);
 Route::get('/dataListings', [ListingController::class, 'index']);
+Route::middleware(['auth:sanctum'])->post('/logout', [UserController::class, 'logout']);
 
 
 

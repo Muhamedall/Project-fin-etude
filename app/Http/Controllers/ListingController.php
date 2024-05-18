@@ -1,5 +1,6 @@
 <?php
 
+// app/Http/Controllers/ListingController.php
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
@@ -9,7 +10,8 @@ class ListingController extends Controller
 {
     public function index()
     {
-        $listings = Listing::all();
+        // Eager load the user relationship
+        $listings = Listing::with('user')->get();
         return response()->json($listings);
     }
 
@@ -44,6 +46,7 @@ class ListingController extends Controller
             'date_fin' => $request->date_fin,
             'people' => $request->people,
             'rooms' => $request->rooms,
+            'user_id' => $request->user()->id,
         ]);
 
         return response()->json($listing, 201);

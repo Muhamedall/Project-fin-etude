@@ -4,7 +4,7 @@ import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from '../../api/api';
-
+import { useSelector } from 'react-redux';
 const AddListing = () => {
   const [selectedDateDebut, setSelectedDateDebut] = useState(null);
   const [selectedDateFin, setSelectedDateFin] = useState(null);
@@ -15,7 +15,8 @@ const AddListing = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [people, setPeople] = useState(0);
   const [rooms, setRooms] = useState(0);
-
+  const user = useSelector((state) => state.users.user);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -72,7 +73,7 @@ const AddListing = () => {
     e.preventDefault();
     setRooms(prevValue => prevValue + 1);
   };
-
+console.log(JSON.stringify(user))
   return (
     <div className="">
       <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">

@@ -19,6 +19,18 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  'users/logoutUser',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.post('/logout');
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.errors);
+    }
+  }
+);
+
 const initialState = {
   user: {
     email: '',
@@ -35,17 +47,22 @@ export const userSlice = createSlice({
       state.user = action.payload;
       state.error = null;
     },
+    
   },
   extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.user = action.payload;
       state.error = null;
+    
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.error = action.payload;
     });
+    
   },
+  
 });
+
 
 export const { setUser } = userSlice.actions;
 

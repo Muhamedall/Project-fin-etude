@@ -17,6 +17,11 @@ class Listing extends Model
         'date_fin',
         'people',
         'rooms',
+        'user_id',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     
 }

@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from '../../api/api';
-import { setShowLogine, setShowInscription, setLoggedIn, setShowProfile } from '../Redux/navbarSlice';
+import { setLoggedIn, setShowLogine, setShowInscription, setShowProfile } from '../Redux/navbarSlice';
 import { useDispatch } from "react-redux";
+import { setUser } from '../Redux/usersSlice';
 
 const Logine = () => {
 
@@ -20,9 +21,10 @@ const Logine = () => {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn === 'true') {
-      navigate('/Student');
+      navigate('/Account'); // Redirect to Account component if user is logged in
     }
   }, [navigate]);
+
 
   const validateForm = () => {
     const fields = [
@@ -59,8 +61,9 @@ const Logine = () => {
     if (isValid) {
      
       try {
-       await axios.post('/login', { email: emailRef.current.value, password: passwordRef.current.value });
-       {console.log(emailRef.current.value)}
+        const response = await axios.post('/login', { email: emailRef.current.value, password: passwordRef.current.value });
+        const userData = response.data.user;
+        dispatch(setUser(userData));
         setErrorlogine(false);
         dispatch(setShowLogine(false));
         dispatch(setShowInscription(false));
@@ -70,7 +73,7 @@ const Logine = () => {
        
         setLoginSuccess(true);
         setTimeout(() => {
-          navigate('/Student');
+          navigate('/Account');
         }, 3000);
       } catch (error) {
         console.log("Error:", error);

@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { setShowProfile, setShowLogine, setShowInscription, setShowMenuOfuser } from '../Redux/navbarSlice';
+import { logoutUser } from '../Redux/usersSlice';
+
 import Logine from '../Forms/Login';
 import Singup from '../Forms/Singup';
 import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
@@ -21,7 +23,7 @@ const Navbar = () => {
   useEffect(() => {
     if (!loggedIn ) {
       
-      dispatch(setShowProfile(true));
+    //
     }
   }, [loggedIn]);
 
@@ -43,6 +45,16 @@ const Navbar = () => {
   const handelInscription = () => {
     dispatch(setShowInscription(true));
     dispatch(setShowProfile(false));
+  };
+  const handleLogout = () => {
+    dispatch(logoutUser())
+      .then(() => {
+        localStorage.removeItem('isLoggedIn'); // Clear local storage
+        // You can redirect the user or perform any other necessary cleanup
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+      });
   };
 
 
@@ -238,7 +250,7 @@ const Navbar = () => {
                   <button >Help Center</button>
                   </li>
                   <li  className='p-2 mt-2 hover:bg-white cursor-pointer '>
-                    <a className="#">Log out</a> 
+                 <button onClick={handleLogout}>  Log out </button>
                   </li>
                  
                
