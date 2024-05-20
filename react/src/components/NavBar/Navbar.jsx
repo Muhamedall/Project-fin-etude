@@ -6,12 +6,14 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { setShowProfile, setShowLogine, setShowInscription, setShowMenuOfuser } from '../Redux/navbarSlice';
 import { logoutUser } from '../Redux/usersSlice';
+import { useNavigate } from 'react-router-dom';
 
 import Logine from '../Forms/Login';
 import Singup from '../Forms/Singup';
 import logo from './WhatsApp_Image_2024-04-12_at_22.08.25-removebg-preview.png';
 
 const Navbar = () => {
+  const  navigate =useNavigate();
   const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const showProfile = useSelector((state) => state.navbar.showProfile);
   const showLogine = useSelector((state) => state.navbar.showLogine);
@@ -36,8 +38,17 @@ const Navbar = () => {
       dispatch(setShowProfile(true));
     }
   };
+  const removeMenuuser=()=>{
+    dispatch(setShowMenuOfuser(false))
+
+  }
+  const removeMenuProfile=()=>{
+    dispatch(setShowProfile(false))
+
+  }
 
   const handleLogin = () => {
+    
     dispatch(setShowLogine(true));
     dispatch(setShowProfile(false));
   };
@@ -47,14 +58,16 @@ const Navbar = () => {
     dispatch(setShowProfile(false));
   };
   const handleLogout = () => {
+   
     dispatch(logoutUser())
       .then(() => {
-        localStorage.removeItem('isLoggedIn'); // Clear local storage
-        // You can redirect the user or perform any other necessary cleanup
+        localStorage.removeItem('isLoggedIn'); 
+        navigate('/');
       })
       .catch((error) => {
         console.error('Logout failed:', error);
       });
+      dispatch(setShowMenuOfuser(false))
   };
 
 
@@ -188,6 +201,8 @@ const Navbar = () => {
         {showProfile ? (
         
         <div className="absolute z-40  mt-[10%] py-2 ml-[60%]   rounded border bg-slate-50 lg:w-[20%] lg:py-5    lg:ml-[70%] lg:mt-[5%] shadow-xl shadow-slate-200 ">
+                   <button className='ml-[85%]' onClick={removeMenuProfile} ><svg  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
+
           <div className="rounded overflow-hidden ">
             <div className="  ">
               <ul className='flex flex-col '>
@@ -218,7 +233,9 @@ const Navbar = () => {
     ) : null}
         
         {showMenuOfuser ? (
+          
         <div className="absolute z-40 mt-[10%] py-2 ml-[60%] rounded border bg-slate-50 lg:w-[20%] lg:py-5 lg:ml-[70%] lg:mt-[5%] shadow-xl shadow-slate-200 ">
+         <button className='ml-[85%]' onClick={removeMenuuser} ><svg  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
          <div className="rounded overflow-hidden ">
             <div className="  ">
               <ul className='flex flex-col '>

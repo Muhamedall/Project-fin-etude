@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { format } from 'date-fns'
-import { setUser } from "../Redux/usersSlice";
-import { registerUser } from '../Redux/usersSlice';
-import { setShowLogine  ,setShowInscription} from '../Redux/navbarSlice';
-import { useDispatch  } from "react-redux";
+import { format } from 'date-fns';
+import { setUser, registerUser } from "../Redux/usersSlice";
+import { setShowLogine, setShowInscription } from '../Redux/navbarSlice';
+import { useDispatch, useSelector } from "react-redux";
+
 const Signup = () => {
   const [loginSuccess, setLoginSuccess] = useState(false); 
-  
+  const user = useSelector((state) => state.users.user);
+  console.log(user)
   const dispatch = useDispatch();
  
   const nameRef = useRef("");
@@ -82,11 +82,16 @@ const Signup = () => {
           city: cityRef.current.value,
         }));
 
-        dispatch(setUser({ name: nameRef.current.value, email: emailRef.current.value }));
-        dispatch(setShowLogine(true)); 
-        dispatch(setShowInscription(false));
-        setLoginSuccess(true);
-        console.log("User registered successfully:", response.payload);
+        if (registerUser.fulfilled.match(response)) {
+          dispatch(setUser(response.payload)); 
+          dispatch(setShowLogine(true)); 
+          dispatch(setShowInscription(false));
+          setLoginSuccess(true);
+          console.log("User registered successfully:", response.payload);
+        } else {
+          setErrorMessages(response.payload);
+          console.log("Error during registration:", response.payload);
+        }
        
         nameRef.current.value = "";
         emailRef.current.value = "";
@@ -99,7 +104,6 @@ const Signup = () => {
           fullname: "", // Reset fullname error to empty string
         }));
   
-        // Display success message for 3 seconds
         setTimeout(() => {
           setLoginSuccess(false);
         }, 3000);
@@ -110,18 +114,16 @@ const Signup = () => {
     }
   };
   
-  
   return (
     <>
-      <div className="absolute ml-[5%] z-40  shadow-zinc-900 lg:w-[50%]  lg:ml-[25%] lg:mt-[5%] lg:h-full ">
-        <form className=" p-[5%]  shadow-md rounded-2xl lg:px-10 bg-gray-100">
-         
-          <div className="  lg:grid lg:grid-cols-2 lg:gap-4    space-x">
+      <div className="absolute ml-[5%] z-40 shadow-zinc-900 lg:w-[50%] lg:ml-[25%] lg:mt-[5%] lg:h-full">
+        <form className="p-[5%] shadow-md rounded-2xl lg:px-10 bg-gray-100">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-4 space-x">
             <div className="lg:mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
               <input
                 ref={nameRef}
-                className= {`${errorMessages.name ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                className={`${errorMessages.name ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                 id="name"
                 type="text"
                 name="name"
@@ -157,11 +159,11 @@ const Signup = () => {
             
             <div className="static max-w-sm">
               <label className="block text-gray-700 text-sm font-bold mb-2">Date of birth</label>
-              <FontAwesomeIcon icon={faCalendarDays} className="absolute z-40 mt-3 ml-2 " />
+              <FontAwesomeIcon icon={faCalendarDays} className="absolute z-40 mt-3 ml-2" />
               <DatePicker
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
-                className={`${errorMessages.dateOfBirth ? "border-red-600 " : ""} bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                className={`${errorMessages.dateOfBirth ? "border-red-600" : ""} bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                 placeholderText="Select date"
                 name="dateOfBirth"
               />
@@ -200,9 +202,9 @@ const Signup = () => {
       </div>
       <footer></footer>
       {loginSuccess &&  <div className="absolute z-50 mb-[15%] ml-[2%] lg:w-[30%] rounded-lg lg:ml-[30%] bg-green-100 border-l-4 border-green-500 text-green-700 lg:p-4" role="alert">
-    <p className="font-bold">Success!</p>
-    <p>You have successfully logged in.</p>
-  </div>}
+        <p className="font-bold">Success!</p>
+        <p>You have successfully logged in.</p>
+      </div>}
     </>
   );
 };
