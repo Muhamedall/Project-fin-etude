@@ -14,6 +14,18 @@ class ListingController extends Controller
         $listings = Listing::with('user')->get();
         return response()->json($listings);
     }
+    public function show($title)
+{
+    // Retrieve the listing by its title
+    $listing = Listing::where('title', $title)->with('user')->first();
+
+    if (!$listing) {
+        return response()->json(['message' => 'Listing not found'], 404);
+    }
+
+    return response()->json($listing);
+}
+
 
     public function store(Request $request)
     {

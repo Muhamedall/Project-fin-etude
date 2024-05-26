@@ -14,6 +14,7 @@ import Account from './components/user-authentified/Account';
 import ManageListing from './components/listings/ManageListings';
 import AddListing from './components/listings/AddListing';
 import Dashboard from './components/listings/Dashboard';
+import DetailesListing from './components/DetailesListing';
 
 
 const App=()=>{
@@ -34,6 +35,8 @@ const App=()=>{
               <Route path="Student" element={<Studente/>}/>
               <Route path="Account" element={<Account/>}/>
               <Route path="ManageListing" element={<ManageListing/>}/>
+              <Route path="DetailesListing/:title" element={< DetailesListing/>}/>
+
               <Route path="AddListing" element={<AddListing/>}/>
               <Route path="Dashboard" element={<Dashboard/>}/>
            

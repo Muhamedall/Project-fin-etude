@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Keyboard, Mousewheel } from "swiper";
+import { Link } from "react-router-dom";
 import { useSelector  } from "react-redux";
 
 
@@ -39,6 +40,9 @@ const ImageGallery = () => {
     return (
         <div className={`${showLogine || showInscription ? "opacity-50 pointer-events-none " : ""} static lg:h-screen lg:grid lg:grid-cols-4 gap-2 lg:mt-[2%] lg:ml-[3%]`}>
             {listings.map(listing => (
+                <>
+                 <Link to={`/DetailesListing/${listing.title}`}>
+             
                 <div key={listing.id} className="">
                     <Swiper
                         className="mt-[7%]  w-[80%] h-[90%]  lg:h-[35%] lg:w-[80%] rounded-lg"
@@ -65,6 +69,8 @@ const ImageGallery = () => {
                     <p className="font-bold ">{listing.price.slice(0, -3)} MAD</p>
                     </div>
                 </div>
+                </Link>
+                </>
             ))}
         </div>
     );

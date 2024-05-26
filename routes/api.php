@@ -30,4 +30,5 @@ Route::get('/dataListings', [ListingController::class, 'index']);
 Route::middleware(['auth:sanctum'])->post('/logout', [UserController::class, 'logout']);
 
 
+Route::get('/dataListings/{title}', [ListingController::class, 'show']);
 

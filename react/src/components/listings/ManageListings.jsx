@@ -1,42 +1,122 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FaEdit, FaTrash, FaComments, FaCalendarAlt } from 'react-icons/fa';
+import EditListing from './EditListing';
+import ViewComments from './ViewComments';
+import ViewReservations from './ViewReservations';
 
-const Listings = () => {
-  const [listings, setListings] = useState([
-    { id: 1, title: 'Cozy Apartment', location: 'New York', price: '$1200', status: 'Active' },
-    // Add more listings here
-  ]);
+const ManageListings = () => {
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedListing, setSelectedListing] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [commentsModalOpen, setCommentsModalOpen] = useState(false);
+  const [reservationsModalOpen, setReservationsModalOpen] = useState(false);
 
-  const deactivateListing = (id) => {
-    setListings(listings.map(listing => listing.id === id ? { ...listing, status: 'Inactive' } : listing));
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/dataListings');
+        setListings(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchListings();
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`api/listings/${id}`);
+      setListings(listings.filter(listing => listing.id !== id));
+    } catch (error) {
+      console.error('Error deleting listing:', error);
+    }
+  };
+
+  const handleEdit = (listing) => {
+    setSelectedListing(listing);
+    setEditModalOpen(true);
+  };
+
+  const handleViewComments = (listing) => {
+    setSelectedListing(listing);
+    setCommentsModalOpen(true);
+  };
+
+  const handleViewReservations = (listing) => {
+    setSelectedListing(listing);
+    setReservationsModalOpen(true);
   };
 
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Manage Listings</h2>
-      <ul className="mt-4">
-        {listings.map(listing => (
-          <li key={listing.id} className="p-4 bg-gray-100 dark:bg-gray-700 rounded mb-4 flex justify-between items-center">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{listing.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400">{listing.location}</p>
-              <p className="text-gray-600 dark:text-gray-400">{listing.price}</p>
-            </div>
-            <div>
-              <span className={`inline-block px-3 py-1 text-sm font-semibold ${listing.status === 'Active' ? 'text-green-800 bg-green-200' : 'text-red-800 bg-red-200'} rounded-full`}>{listing.status}</span>
-              {listing.status === 'Active' && (
-                <button
-                  className="ml-4 px-4 py-2 bg-red-500 text-white rounded"
-                  onClick={() => deactivateListing(listing.id)}
-                >
-                  Deactivate
-                </button>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <p className="text-gray-600 dark:text-gray-300">Loading listings...</p>
+      ) : (
+        <div className="overflow-x-auto mt-4">
+          <table className="min-w-full bg-white dark:bg-gray-800">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 bg-gray-200 dark:bg-gray-700 text-left text-gray-600 dark:text-white">Title</th>
+                <th className="py-2 px-4 bg-gray-200 dark:bg-gray-700 text-left text-gray-600 dark:text-white">Location</th>
+                <th className="py-2 px-4 bg-gray-200 dark:bg-gray-700 text-left text-gray-600 dark:text-white">Price</th>
+                <th className="py-2 px-4 bg-gray-200 dark:bg-gray-700 text-left text-gray-600 dark:text-white">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listings.map(listing => (
+                <tr key={listing.id} className="border-b border-gray-200 dark:border-gray-700">
+                  <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.title}</td>
+                  <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.location}</td>
+                  <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.price} MAD</td>
+                  <td className="py-2 px-4 text-gray-800 dark:text-white">
+                    <button
+                      onClick={() => handleEdit(listing)}
+                      className="mr-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(listing.id)}
+                      className="mr-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700"
+                    >
+                      <FaTrash />
+                    </button>
+                    <button
+                      onClick={() => handleViewComments(listing)}
+                      className="mr-2 px-2 py-1 bg-green-500 text-white rounded hover:bg-green-700"
+                    >
+                      <FaComments />
+                    </button>
+                    <button
+                      onClick={() => handleViewReservations(listing)}
+                      className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700"
+                    >
+                      <FaCalendarAlt />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {editModalOpen && (
+        <EditListing listing={selectedListing} onClose={() => setEditModalOpen(false)} />
+      )}
+      {commentsModalOpen && (
+        <ViewComments listing={selectedListing} onClose={() => setCommentsModalOpen(false)} />
+      )}
+      {reservationsModalOpen && (
+        <ViewReservations listing={selectedListing} onClose={() => setReservationsModalOpen(false)} />
+      )}
     </div>
   );
 };
 
-export default Listings;
+export default ManageListings;
