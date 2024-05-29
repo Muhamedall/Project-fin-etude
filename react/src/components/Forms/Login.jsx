@@ -53,7 +53,6 @@ const Logine = () => {
         const resultAction = await dispatch(loginUser({ email: emailRef.current.value, password: passwordRef.current.value }));
         if (loginUser.fulfilled.match(resultAction)) {
           dispatch(setLoggedIn(true));
-          dispatch(setUser({ email: emailRef.current.value}));
 
           localStorage.setItem('isLoggedIn', 'true');
           dispatch(setShowLogine(false));

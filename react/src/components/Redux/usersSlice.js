@@ -3,21 +3,21 @@ import axios from '../../api/api';
 
 export const registerUser = createAsyncThunk(
   'users/registerUser',
-  async ({ name, email, password, dateOfBirth, city }, thunkAPI) => {
+  async (formData, thunkAPI) => {
     try {
-      const response = await axios.post('/register', {
-        name,
-        email,
-        password,
-        dateOfBirth,
-        city,
+      const response = await axios.post('/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
       return response.data;
+      
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.errors);
     }
   }
 );
+
 
 export const logoutUser = createAsyncThunk(
   'users/logoutUser',

@@ -9,16 +9,17 @@ import { setShowLogine, setShowInscription } from '../Redux/navbarSlice';
 import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
-  const [loginSuccess, setLoginSuccess] = useState(false); 
+  const [loginSuccess, setLoginSuccess] = useState(false);
   const user = useSelector((state) => state.users.user);
-  console.log(user)
+  console.log(user);
   const dispatch = useDispatch();
- 
+
   const nameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const acceptConditionRef = useRef(false);
   const cityRef = useRef("");
+  const profileImageRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errorMessages, setErrorMessages] = useState({
     name: "",
@@ -27,6 +28,7 @@ const Signup = () => {
     dateOfBirth: "",
     city: "",
     accept: "",
+    profileImage: "",
   });
 
   const validateForm = () => {
@@ -70,21 +72,25 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const isValid = validateForm();
-    
+
     if (isValid) {
       try {
         const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null;
-        const response = await dispatch(registerUser({
-          name: nameRef.current.value,
-          email: emailRef.current.value,
-          password: passwordRef.current.value,
-          dateOfBirth: formattedDate,
-          city: cityRef.current.value,
-        }));
+        const formData = new FormData();
+        formData.append("name", nameRef.current.value);
+        formData.append("email", emailRef.current.value);
+        formData.append("password", passwordRef.current.value);
+        formData.append("dateOfBirth", formattedDate);
+        formData.append("city", cityRef.current.value);
+        if (profileImageRef.current.files[0]) {
+          formData.append("profile_image", profileImageRef.current.files[0]);
+        }
+
+        const response = await dispatch(registerUser(formData));
 
         if (registerUser.fulfilled.match(response)) {
-          dispatch(setUser(response.payload)); 
-          dispatch(setShowLogine(true)); 
+          dispatch(setUser(response.payload));
+          dispatch(setShowLogine(true));
           dispatch(setShowInscription(false));
           setLoginSuccess(true);
           console.log("User registered successfully:", response.payload);
@@ -92,18 +98,19 @@ const Signup = () => {
           setErrorMessages(response.payload);
           console.log("Error during registration:", response.payload);
         }
-       
+
         nameRef.current.value = "";
         emailRef.current.value = "";
         passwordRef.current.value = "";
         setSelectedDate(null);
         cityRef.current.value = "";
         acceptConditionRef.current.checked = false;
+        profileImageRef.current.value = null;
         setErrorMessages(prevErrors => ({
           ...prevErrors,
           fullname: "", // Reset fullname error to empty string
         }));
-  
+
         setTimeout(() => {
           setLoginSuccess(false);
         }, 3000);
@@ -113,7 +120,7 @@ const Signup = () => {
       }
     }
   };
-  
+
   return (
     <>
       <div className="absolute ml-[5%] z-40 shadow-zinc-900 lg:w-[50%] lg:ml-[25%] lg:mt-[5%] lg:h-full">
@@ -143,7 +150,7 @@ const Signup = () => {
               />
               {errorMessages.email && <p style={{ color: "red" }}>{errorMessages.email}</p>}
             </div>
-            
+
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
               <input
@@ -156,7 +163,7 @@ const Signup = () => {
               />
               {errorMessages.password && <p style={{ color: "red" }}>{errorMessages.password}</p>}
             </div>
-            
+
             <div className="static max-w-sm">
               <label className="block text-gray-700 text-sm font-bold mb-2">Date of birth</label>
               <FontAwesomeIcon icon={faCalendarDays} className="absolute z-40 mt-3 ml-2" />
@@ -169,7 +176,7 @@ const Signup = () => {
               />
               {errorMessages.dateOfBirth && <p style={{ color: "red" }}>{errorMessages.dateOfBirth}</p>}
             </div>
-            
+
             <div className="lg:mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">City</label>
               <input
@@ -181,9 +188,21 @@ const Signup = () => {
               />
               {errorMessages.city && <p style={{ color: "red" }}>{errorMessages.city}</p>}
             </div>
+
+            <div className="lg:mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Profile Image</label>
+              <input
+                ref={profileImageRef}
+                className={`${errorMessages.profileImage ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                id="profileImage"
+                type="file"
+                name="profileImage"
+              />
+              {errorMessages.profileImage && <p style={{ color: "red" }}>{errorMessages.profileImage}</p>}
+            </div>
           </div>
 
-          <input className="mr-2 leading-tight" type="checkbox" name="chexInput" ref={acceptConditionRef}/>
+          <input className="mr-2 leading-tight" type="checkbox" name="chexInput" ref={acceptConditionRef} />
           <span className="text-sm">
             I agree to the Terms of Use and Privacy Policy <span className="text-red-500">*</span>
             {errorMessages.accept && <p style={{ color: "red" }}>{errorMessages.accept}</p>}
@@ -201,10 +220,12 @@ const Signup = () => {
         </form>
       </div>
       <footer></footer>
-      {loginSuccess &&  <div className="absolute z-50 mb-[15%] ml-[2%] lg:w-[30%] rounded-lg lg:ml-[30%] bg-green-100 border-l-4 border-green-500 text-green-700 lg:p-4" role="alert">
-        <p className="font-bold">Success!</p>
-        <p>You have successfully logged in.</p>
-      </div>}
+      {loginSuccess && (
+        <div className="absolute z-50 mb-[15%] ml-[2%] lg:w-[30%] rounded-lg lg:ml-[30%] bg-green-100 border-l-4 border-green-500 text-green-700 lg:p-4" role="alert">
+          <p className="font-bold">Success!</p>
+          <p>You have successfully logged in.</p>
+        </div>
+      )}
     </>
   );
 };
