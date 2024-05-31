@@ -36,7 +36,6 @@ class UserController extends Controller
     if ($request->hasFile('profile_image')) {
         $imagePath = $request->file('profile_image')->store('profile_images', 'public');
     }
-
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,

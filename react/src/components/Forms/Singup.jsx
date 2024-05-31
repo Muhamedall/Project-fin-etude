@@ -88,7 +88,8 @@ const Signup = () => {
 
         const response = await dispatch(registerUser(formData));
 
-        if (registerUser.fulfilled.match(response)) {
+        if (registerUser.fulfilled.match(response)) {console.log("response data is:" +JSON.stringify(response))
+
           dispatch(setUser(response.payload));
           dispatch(setShowLogine(true));
           dispatch(setShowInscription(false));

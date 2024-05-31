@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'date_of_birth' => $request->dateOfBirth,
+            'dateOfBirth' => $request->dateOfBirth,
             'city' => $request->city,
         ]);
 
@@ -40,6 +40,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return response()->noContent();
+        return $user;
     }
 }
