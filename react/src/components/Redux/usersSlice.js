@@ -2,18 +2,21 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../api/api';
 
 export const registerUser = createAsyncThunk(
-  'users/registerUser',
-  async (formData, thunkAPI) => {
+  "users/registerUser",
+  async (formData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/register', formData, {
+      const response = await axios.post("/api/register", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       return response.data;
-      
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.errors);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
   }
 );
@@ -32,63 +35,74 @@ export const logoutUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  'users/loginUser',
-  async ({ email, password }, thunkAPI) => {
+  "users/loginUser",
+  async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/login', { email, password });
-      return response.data.user;
+      const response = await axios.post("http://localhost:8000/api/login", { email, password });
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.errors);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
   }
 );
 
 const initialState = {
-  user: {
-    email: '',
-    name: '',
-  },
-  error: null,
+  user: null,
   loading: false,
+  error: null,
+  
 };
 
-export const userSlice = createSlice({
+ const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
-      state.error = null;
+    
+    },
+    clearUser(state) {
+      state.user = null;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.user = action.payload;
+    builder.addCase(registerUser.pending, (state) => {
+      state.loading = true;
       state.error = null;
-    });
-    builder.addCase(registerUser.rejected, (state, action) => {
+    })
+    .addCase(registerUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+    })
+    .addCase(registerUser.rejected, (state, action) => {
+      state.loading = false;
       state.error = action.payload;
-    });
-    builder.addCase(logoutUser.fulfilled, (state) => {
+    })
+    .addCase(logoutUser.fulfilled, (state) => {
       state.user = initialState.user;
       state.error = null;
-    });
-    builder.addCase(logoutUser.rejected, (state, action) => {
+    })
+    .addCase(logoutUser.rejected, (state, action) => {
       state.error = action.payload;
-    });
-    builder.addCase(loginUser.pending, (state) => {
+    })
+    .addCase(loginUser.pending, (state) => {
       state.loading = true;
-    });
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.user = action.payload;
-    
-    });
-    builder.addCase(loginUser.rejected, (state, action) => {
-      state.error = action.payload;
+      state.error = null;
+    })
+    .addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
+      state.user = action.payload.user;
+    })
+    .addCase(loginUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     });
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser ,clearUser } = userSlice.actions;
 export default userSlice.reducer;

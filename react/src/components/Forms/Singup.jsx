@@ -80,151 +80,132 @@ const Signup = () => {
         formData.append("name", nameRef.current.value);
         formData.append("email", emailRef.current.value);
         formData.append("password", passwordRef.current.value);
-        formData.append("dateOfBirth", formattedDate);
         formData.append("city", cityRef.current.value);
+        formData.append("dateOfBirth", formattedDate);
         if (profileImageRef.current.files[0]) {
-          formData.append("profile_image", profileImageRef.current.files[0]);
+          formData.append("profileImage", profileImageRef.current.files[0]);
         }
 
-        const response = await dispatch(registerUser(formData));
-
-        if (registerUser.fulfilled.match(response)) {console.log("response data is:" +JSON.stringify(response))
-
-          dispatch(setUser(response.payload));
-          dispatch(setShowLogine(true));
-          dispatch(setShowInscription(false));
+        const resultAction = await dispatch(registerUser(formData));
+        if (registerUser.fulfilled.match(resultAction)) {
+          dispatch(setUser(resultAction.payload.user));
           setLoginSuccess(true);
-          console.log("User registered successfully:", response.payload);
-        } else {
-          setErrorMessages(response.payload);
-          console.log("Error during registration:", response.payload);
+          setTimeout(() => {
+            setLoginSuccess(false);
+            dispatch(setShowLogine(true));
+            dispatch(setShowInscription(false));
+          }, 2000);
+        } else if (registerUser.rejected.match(resultAction)) {
+          setErrorMessages({ ...errorMessages, ...resultAction.payload.errors });
         }
-
-        nameRef.current.value = "";
-        emailRef.current.value = "";
-        passwordRef.current.value = "";
-        setSelectedDate(null);
-        cityRef.current.value = "";
-        acceptConditionRef.current.checked = false;
-        profileImageRef.current.value = null;
-        setErrorMessages(prevErrors => ({
-          ...prevErrors,
-          fullname: "", // Reset fullname error to empty string
-        }));
-
-        setTimeout(() => {
-          setLoginSuccess(false);
-        }, 3000);
       } catch (error) {
-        console.log("Error:", error.response.data);
-        setErrorMessages(error.response.data.errors);
+        console.error("Error:", error);
       }
     }
   };
 
   return (
     <>
-      <div className="absolute ml-[5%] z-40 shadow-zinc-900 lg:w-[50%] lg:ml-[25%] lg:mt-[5%] lg:h-full">
-        <form className="p-[5%] shadow-md rounded-2xl lg:px-10 bg-gray-100">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-4 space-x">
+      <div className="ml-[10%] lg:w-full max-w-xs absolute z-40 lg:ml-[35%] lg:mt-[3%] lg:h-full shadow-zinc-900">
+        <form className="p-[5%] bg-white shadow-md rounded lg:px-10 lg:p-[15%] lg:mb-4">
+          <nav className="flex flex-wrap gap-2">
+            <div></div>
+            <div>
+              <h2 className="font-serif ml-10 text-wheat text-2xl">Sign up for <span className="m-0 font-mono">Student</span>Nest</h2>
+            </div>
+          </nav>
+          <div className="lg:mt-16 grid space-y-4">
             <div className="lg:mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
               <input
                 ref={nameRef}
                 className={`${errorMessages.name ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                id="name"
                 type="text"
-                name="name"
+                placeholder="Your full name"
               />
               {errorMessages.name && <p style={{ color: "red" }}>{errorMessages.name}</p>}
             </div>
-
             <div className="lg:mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
               <input
                 ref={emailRef}
                 className={`${errorMessages.email ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                id="email"
-                type="text"
-                name="email"
-                placeholder="example@gmail.com"
+                type="email"
+                placeholder="Your email"
               />
               {errorMessages.email && <p style={{ color: "red" }}>{errorMessages.email}</p>}
             </div>
-
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
               <input
                 ref={passwordRef}
                 className={`${errorMessages.password ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
-                id="password"
-                name="password"
                 type="password"
-                placeholder="******************"
+                placeholder="Your password"
               />
               {errorMessages.password && <p style={{ color: "red" }}>{errorMessages.password}</p>}
             </div>
-
-            <div className="static max-w-sm">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Date of birth</label>
-              <FontAwesomeIcon icon={faCalendarDays} className="absolute z-40 mt-3 ml-2" />
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                className={`${errorMessages.dateOfBirth ? "border-red-600" : ""} bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-                placeholderText="Select date"
-                name="dateOfBirth"
-              />
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2">Date of Birth</label>
+              <div className="relative">
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  placeholderText="Select a date"
+                  className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+                    errorMessages.dateOfBirth ? "border-red-600" : ""
+                  }`}
+                />
+                <FontAwesomeIcon icon={faCalendarDays} className="absolute right-3 top-2 text-gray-500" />
+              </div>
               {errorMessages.dateOfBirth && <p style={{ color: "red" }}>{errorMessages.dateOfBirth}</p>}
             </div>
-
-            <div className="lg:mb-4">
+            <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">City</label>
               <input
-                name="city"
                 ref={cityRef}
-                className={`${errorMessages.city ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                id="city"
+                className={`${errorMessages.city ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
                 type="text"
+                placeholder="Your city"
               />
               {errorMessages.city && <p style={{ color: "red" }}>{errorMessages.city}</p>}
             </div>
-
-            <div className="lg:mb-4">
+            <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">Profile Image</label>
               <input
                 ref={profileImageRef}
-                className={`${errorMessages.profileImage ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                id="profileImage"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 type="file"
-                name="profileImage"
+                accept="image/*"
               />
-              {errorMessages.profileImage && <p style={{ color: "red" }}>{errorMessages.profileImage}</p>}
             </div>
-          </div>
-
-          <input className="mr-2 leading-tight" type="checkbox" name="chexInput" ref={acceptConditionRef} />
-          <span className="text-sm">
-            I agree to the Terms of Use and Privacy Policy <span className="text-red-500">*</span>
-            {errorMessages.accept && <p style={{ color: "red" }}>{errorMessages.accept}</p>}
-          </span>
-
-          <div className="flex items-center justify-between">
-            <button
-              onClick={handleSubmit}
-              className="shadow bg-slate-950 hover:bg-slate-700 focus:shadow-outline focus:outline-none text-white font-bold py-1 px-4 rounded"
-              type="button"
-            >
-              Sign up
-            </button>
+            <div className="mb-6">
+              <label className="inline-flex items-center">
+                <input
+                  ref={acceptConditionRef}
+                  type="checkbox"
+                  className="form-checkbox"
+                />
+                <span className="ml-2">Accept terms and conditions</span>
+              </label>
+              {errorMessages.accept && <p style={{ color: "red" }}>{errorMessages.accept}</p>}
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                onClick={handleSubmit}
+                className="shadow bg-slate-950 hover:bg-slate-700 focus:shadow-outline focus:outline-none text-white font-bold py-1 px-4 rounded"
+                type="button"
+              >
+                Sign Up
+              </button>
+            </div>
           </div>
         </form>
       </div>
-      <footer></footer>
       {loginSuccess && (
         <div className="absolute z-50 mb-[15%] ml-[2%] lg:w-[30%] rounded-lg lg:ml-[30%] bg-green-100 border-l-4 border-green-500 text-green-700 lg:p-4" role="alert">
           <p className="font-bold">Success!</p>
-          <p>You have successfully logged in.</p>
+          <p>You have successfully signed up. Redirecting to login...</p>
         </div>
       )}
     </>

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +18,3 @@ Route::get('/', function () {
 });
 
 require __DIR__.'/auth.php';
-
-Route::get('/csrf-token', function () {
-    return response()->json(['csrfToken' => csrf_token()]);
-});
-
