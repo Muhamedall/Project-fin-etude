@@ -56,7 +56,6 @@ const DetailRoom = () => {
     };
 
     const handleConfirmReservation = () => {
-        // Add logic to handle reservation confirmation, e.g., API call to process payment
         console.log('Reservation confirmed with card details:', cardDetails);
         setShowPayment(false);
     };

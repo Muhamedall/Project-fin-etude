@@ -14,7 +14,7 @@ import ManageListing from './components/listings/ManageListings';
 import AddListing from './components/listings/AddListing';
 import Dashboard from './components/listings/Dashboard';
 import DetailesListing from './components/DetailesListing';
-
+import Wishlest from "./components/Wishlest";
 
 const App=()=>{
    return(
@@ -38,7 +38,8 @@ const App=()=>{
 
               <Route path="AddListing" element={<AddListing/>}/>
               <Route path="Dashboard" element={<Dashboard/>}/>
-           
+              <Route path="Wishlest" element={<Wishlest/>}/>
+              
               <Route path="*" element={<Nopages />} />
           
           </Routes>

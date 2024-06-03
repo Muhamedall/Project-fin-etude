@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../api/api';
+import { setLoggedIn, setShowLogine, setShowInscription, setShowProfile } from './navbarSlice';
 
 export const registerUser = createAsyncThunk(
   "users/registerUser",
@@ -21,12 +22,13 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-
 export const logoutUser = createAsyncThunk(
   'users/logoutUser',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.post('/logout');
+      const response = await axios.post('/api/logout');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('user');
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.errors);
@@ -36,10 +38,20 @@ export const logoutUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "users/loginUser",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:8000/api/login", { email, password });
-      return response.data;
+      const response = await axios.post("/api/login", { email, password });
+      const userData = response.data; 
+
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('user', JSON.stringify(userData.user));
+
+      dispatch(setLoggedIn(true));
+      dispatch(setShowLogine(false));
+      dispatch(setShowInscription(false));
+      dispatch(setShowProfile(false));
+
+      return userData;
     } catch (error) {
       if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
@@ -51,22 +63,17 @@ export const loginUser = createAsyncThunk(
 );
 
 const initialState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem('user')) || null,
   loading: false,
   error: null,
-  
 };
 
- const userSlice = createSlice({
+const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
-    
-    },
-    clearUser(state) {
-      state.user = null;
     },
   },
   extraReducers: (builder) => {
@@ -83,7 +90,7 @@ const initialState = {
       state.error = action.payload;
     })
     .addCase(logoutUser.fulfilled, (state) => {
-      state.user = initialState.user;
+      state.user = null;
       state.error = null;
     })
     .addCase(logoutUser.rejected, (state, action) => {
@@ -104,5 +111,5 @@ const initialState = {
   },
 });
 
-export const { setUser ,clearUser } = userSlice.actions;
+export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

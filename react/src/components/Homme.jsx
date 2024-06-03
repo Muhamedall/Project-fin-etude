@@ -19,7 +19,7 @@ const ImageGallery = () => {
     const showLogine = useSelector((state) => state.navbar.showLogine);
     const showInscription = useSelector((state) => state.navbar.showInscription);
 
-
+  
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/dataListings')

@@ -74,6 +74,7 @@ const ManageListings = () => {
                   <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.title}</td>
                   <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.location}</td>
                   <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.price} MAD</td>
+                  
                   <td className="py-2 px-4 text-gray-800 dark:text-white">
                     <button
                       onClick={() => handleEdit(listing)}

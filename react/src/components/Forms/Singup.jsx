@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { format } from 'date-fns';
-import { setUser, registerUser } from "../Redux/usersSlice";
+import {  registerUser } from "../Redux/usersSlice";
 import { setShowLogine, setShowInscription } from '../Redux/navbarSlice';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -88,7 +88,6 @@ const Signup = () => {
 
         const resultAction = await dispatch(registerUser(formData));
         if (registerUser.fulfilled.match(resultAction)) {
-          dispatch(setUser(resultAction.payload.user));
           setLoginSuccess(true);
           setTimeout(() => {
             setLoginSuccess(false);

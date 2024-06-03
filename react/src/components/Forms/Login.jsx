@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../Redux/usersSlice';
+import { loginUser  } from '../Redux/usersSlice';
 import { setLoggedIn, setShowLogine, setShowInscription, setShowProfile } from '../Redux/navbarSlice';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -53,6 +53,7 @@ const Logine = () => {
         const resultAction = await dispatch(loginUser({ email: emailRef.current.value, password: passwordRef.current.value }));
         if (loginUser.fulfilled.match(resultAction)) {
           dispatch(setLoggedIn(true));
+
 
           localStorage.setItem('isLoggedIn', 'true');
           dispatch(setShowLogine(false));

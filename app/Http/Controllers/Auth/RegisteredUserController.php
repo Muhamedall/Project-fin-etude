@@ -26,14 +26,18 @@ class RegisteredUserController extends Controller
             'password' => ['required', Rules\Password::defaults()],
             'dateOfBirth' => ['required', 'date'],
             'city' => ['required', 'string', 'max:255'],
-        ]);
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
 
+        ]);
+      
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'dateOfBirth' => $request->dateOfBirth,
             'city' => $request->city,
+            'profile_image' => $request->file('profile_image')->store('profile_images', 'public'),
+
         ]);
 
         event(new Registered($user));
