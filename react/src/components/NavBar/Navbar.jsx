@@ -3,7 +3,7 @@ import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { setShowProfile, setShowLogine, setShowInscription, setShowMenuOfuser } from '../Redux/navbarSlice';
 import { logoutUser } from '../Redux/usersSlice';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,7 @@ const Navbar = () => {
   const showLogine = useSelector((state) => state.navbar.showLogine);
   const showInscription = useSelector((state) => state.navbar.showInscription);
   const showMenuOfuser = useSelector((state) => state.navbar.showMenuOfuser);
+  const numberFavories = useSelector((state)=>state.wishlests.numberFavories);
  
   
   const dispatch = useDispatch();
@@ -254,13 +255,15 @@ const Navbar = () => {
                   <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
                 
 
-               <button >Wishlist</button>
+               
+               <Link to="Wishlest" className=' static' >Wishlist <span className=' absolute bg-red-600 text-gray-50 p-1 w-[7%] h-[7%]  rounded-full'>{numberFavories}</span></Link>
+
                 
                   </li>
                   <li className='p-2 hover:bg-white border-b font-medium cursor-pointer ' >
                 
 
-               <button >Messages</button>
+                   <button >Messages</button>
                 
                   </li>
                   <li  className='p-2 mt-2 hover:bg-white   cursor-pointer '>
