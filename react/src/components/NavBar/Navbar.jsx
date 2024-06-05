@@ -3,7 +3,7 @@ import { faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { setShowProfile, setShowLogine, setShowInscription, setShowMenuOfuser } from '../Redux/navbarSlice';
 import { logoutUser } from '../Redux/usersSlice';
 import { useNavigate } from 'react-router-dom';
@@ -235,10 +235,10 @@ const Navbar = () => {
         
         {showMenuOfuser ? (
           
-        <div className="absolute z-40 mt-[10%] py-2 ml-[60%] rounded border bg-slate-50 lg:w-[20%] lg:py-5 lg:ml-[70%] lg:mt-[5%] shadow-xl shadow-slate-200 ">
+        <div className="absolute z-40 mt-[15%] py-2 ml-[60%]  rounded border bg-slate-50 lg:w-[20%] lg:py-5 lg:ml-[70%] lg:mt-[5%] shadow-xl shadow-slate-200 ">
          <button className='ml-[85%]' onClick={removeMenuuser} ><svg  xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
          <div className="rounded overflow-hidden ">
-            <div className="  ">
+            <div className=" ">
               <ul className='flex flex-col '>
                 <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
                 
@@ -252,11 +252,16 @@ const Navbar = () => {
                
                 
                   </li>
-                  <li className='p-2 hover:bg-white font-medium cursor-pointer ' >
+                  <li className='p-2 static hover:bg-white font-medium cursor-pointer ' >
                 
 
                
-               <Link to="Wishlest" className=' static' >Wishlist <span className=' absolute bg-red-600 text-gray-50 p-1 w-[7%] h-[7%]  rounded-full'>{numberFavories}</span></Link>
+                  <Link to="Wishlest" >
+  Wishlist 
+  <span className={`${numberFavories.length === 0 ? ' hidden' :'bg-red-600 absolute text-gray-50 p-1 w-[7%] h-[7%] text-center text-sm ml-[7px] rounded-full'}`}>
+    {numberFavories}
+  </span>
+</Link>
 
                 
                   </li>

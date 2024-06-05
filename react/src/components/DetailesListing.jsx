@@ -9,6 +9,12 @@ import "swiper/css/pagination";
 import "swiper/css/keyboard";
 import "swiper/css/mousewheel";
 const DetailRoom = () => {
+    const [comments, setComments] = useState([]);
+const [newComment, setNewComment] = useState('');
+const [newReply, setNewReply] = useState({});
+const [rating, setRating] = useState(0);
+const [userRating, setUserRating] = useState(null);
+
     SwiperCore.use([Navigation, Pagination, Keyboard, Mousewheel]);
     const { title } = useParams();
     const [roomDetail, setRoomDetail] = useState(null);
@@ -59,7 +65,23 @@ const DetailRoom = () => {
         console.log('Reservation confirmed with card details:', cardDetails);
         setShowPayment(false);
     };
-
+    const handleAddComment = () => {
+        setComments([...comments, { text: newComment, replies: [] }]);
+        setNewComment('');
+    };
+    
+    const handleAddReply = (index) => {
+        const updatedComments = [...comments];
+        updatedComments[index].replies.push(newReply[index] || '');
+        setComments(updatedComments);
+        setNewReply({ ...newReply, [index]: '' });
+    };
+    
+    const handleRatingChange = (value) => {
+        setRating(value);
+        setUserRating(value);
+    };
+    
     return (
         <div className='mt-10 ml-[4%] lg:static'>
             <h1 className='font-bold text-2xl lg:text-4xl'>{roomDetail.title}</h1>
@@ -69,7 +91,7 @@ const DetailRoom = () => {
                 {images.length > 0 && (
                     <>
 
-<Swiper
+ <Swiper
                         className=" inline-block lg:hidden mt-[7%]  w-[80%] h-[90%]  lg:h-[35%] lg:w-[80%] rounded-lg ml-[5%]"
                         modules={[Navigation, Pagination, Keyboard, Mousewheel]}
                         navigation
@@ -178,9 +200,87 @@ const DetailRoom = () => {
                     <p className="text-lg font-semibold">Owner Details</p>
                     <p className="text-sm text-gray-700">{roomDetail.user.name}</p>
                     <p className="text-sm text-gray-700">{roomDetail.user.city}</p>
-                </div>
-           
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M280-240q-17 0-28.5-11.5T240-280v-80h520v-360h80q17 0 28.5 11.5T880-680v600L720-240H280ZM80-280v-560q0-17 11.5-28.5T120-880h520q17 0 28.5 11.5T680-840v360q0 17-11.5 28.5T640-440H240L80-280Zm520-240v-280H160v280h440Zm-440 0v-280 280Z"/></svg>
 
+                </div>
+                <div>
+                   
+        <div className="mt-10">
+            <h2 className="text-2xl font-semibold">Rate this Room</h2>
+            <div className="flex items-center mt-4">
+                {[1, 2, 3, 4, 5].map((star) => (
+                    <svg
+                        key={star}
+                        className={`h-6 w-6 cursor-pointer ${
+                            star <= rating ? 'text-yellow-500' : 'text-gray-300'
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        onClick={() => handleRatingChange(star)}
+                    >
+                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.084 5.854 1.472 8.318L12 18.896l-7.388 3.882 1.472-8.318-6.084-5.854 8.332-1.151z" />
+                    </svg>
+                ))}
+            </div>
+            {userRating && (
+                <p className="mt-2 text-gray-700">You rated this room: {userRating} stars</p>
+            )}
+        </div>
+
+        <div className="mt-10">
+            <h2 className="text-2xl font-semibold">Comments</h2>
+            <div className="mt-4">
+                <textarea
+                    className="w-full p-2 border border-gray-300 rounded-lg"
+                    rows="4"
+                    placeholder="Add a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button
+                    className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                    onClick={handleAddComment}
+                >
+                    Add Comment
+                </button>
+            </div>
+            <div className="mt-6 space-y-4">
+                {comments.map((comment, index) => (
+                    <div key={index} className="p-4 border border-gray-200 rounded-lg">
+                        <p>{comment.text}</p>
+                        <div className="mt-2">
+                            <textarea
+                                className="w-full p-2 border border-gray-300 rounded-lg"
+                                rows="2"
+                                placeholder="Add a reply..."
+                                value={newReply[index] || ''}
+                                onChange={(e) =>
+                                    setNewReply({ ...newReply, [index]: e.target.value })
+                                }
+                            />
+                            <button
+                                className="mt-2 bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600"
+                                onClick={() => handleAddReply(index)}
+                            >
+                                Add Reply
+                            </button>
+                        </div>
+                        {comment.replies.length > 0 && (
+                            <div className="mt-4 space-y-2">
+                                {comment.replies.map((reply, replyIndex) => (
+                                    <div key={replyIndex} className="ml-4 p-2 border-l-2 border-gray-300">
+                                        <p>{reply}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+                
+                </div>
+          
             {showPayment && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out slide-down">
