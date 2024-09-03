@@ -8,7 +8,7 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axios.post("/api/register", formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type" : "multipart/form-data",
         },
       });
       return response.data;
@@ -41,7 +41,7 @@ export const loginUser = createAsyncThunk(
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await axios.post("/api/login", { email, password });
-      const userData = response.data; 
+      const userData = response.data;
 
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('user', JSON.stringify(userData.user));

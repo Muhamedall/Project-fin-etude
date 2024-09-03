@@ -30,6 +30,10 @@ Route::post('/listings', [ListingController::class, 'store']);
 Route::get('/dataListings', [ListingController::class, 'index']);
 Route::middleware(['auth:sanctum'])->post('/logout', [UserController::class, 'logout']);
 
+Route::post('/wishlests', [WishlestController::class, 'addFavorite']);
+Route::delete('/wishlests', [WishlestController::class, 'removeFavorite']);
+Route::get('/wishlests', [WishlestController::class, 'getFavorites']);
+
 
 Route::get('/dataListings/{title}', [ListingController::class, 'show']);
 
