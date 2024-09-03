@@ -105,20 +105,20 @@ const Signup = () => {
 
   return (
     <>
-      <div className="ml-[10%] lg:w-full max-w-xs absolute z-40 lg:ml-[35%] lg:mt-[3%] lg:h-full shadow-zinc-900">
-        <form className="p-[5%] bg-white shadow-md rounded lg:px-10 lg:p-[15%] lg:mb-4">
-          <nav className="flex flex-wrap gap-2">
+      <div className="ml-[10%] lg:w-[50%]  absolute z-40 lg:ml-[35%] lg:mt-[3%] lg:h-[200%] w-[50%]  shadow-zinc-900">
+        <form className="p-[5%] bg-white shadow-md rounded lg:px-10 lg:p-[10%] lg:mb-4  ">
+          <nav className="flex flex-wrap gap-2 ">
             <div></div>
             <div>
-              <h2 className="font-serif ml-10 text-wheat text-2xl">Sign up for <span className="m-0 font-mono">Student</span>Nest</h2>
+              <h2 className="font-serif ml-[20%] text-wheat text-2xl">Sign up for <span className="m-0 font-mono">Student</span>Nest</h2>
             </div>
           </nav>
-          <div className="lg:mt-16 grid space-y-4">
+          <div className="lg:mt-10 lg:ml-[5%] lg:grid lg:grid-cols-2 lg:gap-5 lg:w-[80%]">
             <div className="lg:mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
               <input
                 ref={nameRef}
-                className={`${errorMessages.name ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                className={`${errorMessages.name ? "border-red-600" : ""} shadow appearance-none border rounded w-full py-2 px-3  text-gray-700 leading-tight focus:outline-none focus:shadow-outline `}
                 type="text"
                 placeholder="Your full name"
               />

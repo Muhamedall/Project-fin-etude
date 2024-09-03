@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const loadFromLocalStorage = () => {
+
+const loadFromLocalStorage = (userId) => {
     try {
-        const serializedState = localStorage.getItem('favories');
+        const serializedState = localStorage.getItem(`favories_${userId}`);
         if (serializedState === null) {
             return [];
         }
@@ -12,17 +13,18 @@ const loadFromLocalStorage = () => {
     }
 };
 
-const saveToLocalStorage = (state) => {
+const saveToLocalStorage = (userId, state) => {
     try {
         const serializedState = JSON.stringify(state);
-        localStorage.setItem('favories', serializedState);
+        localStorage.setItem(`favories_${userId}`, serializedState);
     } catch (err) {
         console.error('Error saving to local storage:', err);
     }
 };
-const loadNumberFavoriesFromLocalStorage = () => {
+
+const loadNumberFavoriesFromLocalStorage = (userId) => {
     try {
-        const serializedState = localStorage.getItem('numberFavories');
+        const serializedState = localStorage.getItem(`numberFavories_${userId}`);
         if (serializedState === null) {
             return 0; 
         }
@@ -32,18 +34,17 @@ const loadNumberFavoriesFromLocalStorage = () => {
     }
 };
 
-const saveNumberFavoriesToLocalStorage = (numberFavories) => {
+const saveNumberFavoriesToLocalStorage = (userId, numberFavories) => {
     try {
-        localStorage.setItem('numberFavories', numberFavories.toString()); 
+        localStorage.setItem(`numberFavories_${userId}`, numberFavories.toString()); 
     } catch (err) {
         console.error('Error saving numberFavories to local storage:', err);
     }
 };
 
-
 const initialState = {
-    favories: loadFromLocalStorage(),
-    numberFavories: loadNumberFavoriesFromLocalStorage(), 
+    favories: [],
+    numberFavories: 0, 
     loading: false,
     error: null,
 };
@@ -52,28 +53,37 @@ const wishlestSlice = createSlice({
     name: 'wishlests',
     initialState,
     reducers: {
+        initializeWishlest: (state, action) => {
+            const userId = action.payload;
+            state.favories = loadFromLocalStorage(userId);
+            state.numberFavories = loadNumberFavoriesFromLocalStorage(userId);
+        },
         addWishlest: (state, action) => {
+            const userId = action.payload.userId;
+            const item = action.payload.item;
+
             if (!Array.isArray(state.favories)) {
                 state.favories = [];
             }
-            const existingItem = state.favories.find(item => item.id === action.payload.id);
+            const existingItem = state.favories.find(fav => fav.id === item.id);
             if (!existingItem) {
-                state.favories.push(action.payload);
-                saveToLocalStorage(state.favories);
+                state.favories.push(item);
+                saveToLocalStorage(userId, state.favories);
                 state.numberFavories = state.favories.length;
-                saveNumberFavoriesToLocalStorage(state.numberFavories); // Save numberFavories to localStorage
-                console.log("the number favories:" + state.numberFavories);
+                saveNumberFavoriesToLocalStorage(userId, state.numberFavories);
             }
         },
         removeWishlest: (state, action) => {
-            state.favories = state.favories.filter(item => item.id !== action.payload.id);
-            saveToLocalStorage(state.favories);
+            const userId = action.payload.userId;
+            const itemId = action.payload.itemId;
+
+            state.favories = state.favories.filter(fav => fav.id !== itemId);
+            saveToLocalStorage(userId, state.favories);
             state.numberFavories = state.favories.length;
-            saveNumberFavoriesToLocalStorage(state.numberFavories); // Save numberFavories to localStorage
-            console.log("the number favories:" + state.numberFavories);
+            saveNumberFavoriesToLocalStorage(userId, state.numberFavories);
         },
     },
 });
 
-export const { addWishlest, removeWishlest } = wishlestSlice.actions;
+export const { addWishlest, removeWishlest, initializeWishlest } = wishlestSlice.actions;
 export default wishlestSlice.reducer;

@@ -23,5 +23,8 @@ class Listing extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+    public function commenter()
+    {
+        return $this->hasMany(Commenter::class);
+    }
 }

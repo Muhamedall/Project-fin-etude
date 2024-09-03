@@ -4,8 +4,11 @@ import { FaEdit, FaTrash, FaComments, FaCalendarAlt } from 'react-icons/fa';
 import EditListing from './EditListing';
 import ViewComments from './ViewComments';
 import ViewReservations from './ViewReservations';
+import { useSelector } from 'react-redux';
 
 const ManageListings = () => {
+  const user = useSelector((state) => state.users.user);
+
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedListing, setSelectedListing] = useState(null);
@@ -16,8 +19,13 @@ const ManageListings = () => {
   useEffect(() => {
     const fetchListings = async () => {
       try {
+        // Fetch all listings
         const response = await axios.get('http://localhost:8000/api/dataListings');
-        setListings(response.data);
+        
+        // Filter listings by the logged-in user's ID
+        const userSpecificListings = response.data.filter(listing => listing.user_id === user.id);
+
+        setListings(userSpecificListings);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching listings:', error);
@@ -26,11 +34,11 @@ const ManageListings = () => {
     };
 
     fetchListings();
-  }, []);
+  }, [user.id]);
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`api/listings/${id}`);
+      await axios.delete(`http://localhost:8000/api/listings/${id}`);
       setListings(listings.filter(listing => listing.id !== id));
     } catch (error) {
       console.error('Error deleting listing:', error);
@@ -74,7 +82,6 @@ const ManageListings = () => {
                   <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.title}</td>
                   <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.location}</td>
                   <td className="py-2 px-4 text-gray-800 dark:text-white">{listing.price} MAD</td>
-                  
                   <td className="py-2 px-4 text-gray-800 dark:text-white">
                     <button
                       onClick={() => handleEdit(listing)}

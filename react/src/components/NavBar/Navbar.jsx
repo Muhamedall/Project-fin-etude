@@ -258,7 +258,7 @@ const Navbar = () => {
                
                   <Link to="Wishlest" >
   Wishlist 
-  <span className={`${numberFavories.length === 0 ? ' hidden' :'bg-red-600 absolute text-gray-50 p-1 w-[7%] h-[7%] text-center text-sm ml-[7px] rounded-full'}`}>
+  <span className={`${numberFavories.length === 0 ? ' hidden' :'bg-red-600 absolute text-gray-50  w-[5%] h-[5%] text-center text-sm ml-[7px] mt-[5px] rounded-full'}`}>
     {numberFavories}
   </span>
 </Link>

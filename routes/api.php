@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EtudiantControlloller;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,7 @@ Route::middleware(['auth:sanctum'])->post('/logout', [UserController::class, 'lo
 
 
 Route::get('/dataListings/{title}', [ListingController::class, 'show']);
+
+Route::post('/comments', [CommentController::class, 'store']);
+Route::get('/listings/{listingId}/comments', [CommentController::class, 'index']);
 
