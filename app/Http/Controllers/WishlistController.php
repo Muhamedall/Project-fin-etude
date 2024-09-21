@@ -4,26 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Wishlist; 
 
-class WishlestController extends Controller
+class WishlistController extends Controller
 {
     public function addFavorite(Request $request)
     {
         $user = Auth::user();
-        
-        $favorite = Favorite::create([
+
+        $wishlist = Wishlist::create([
             'user_id' => $user->id,
             'listing_id' => $request->listing_id,
         ]);
 
-        return response()->json($favorite, 201);
+        return response()->json($wishlist, 201);
     }
 
     public function removeFavorite(Request $request)
     {
         $user = Auth::user();
-        
-        Favorite::where('user_id', $user->id)
+
+        Wishlist::where('user_id', $user->id)
             ->where('listing_id', $request->listing_id)
             ->delete();
 
@@ -33,9 +35,10 @@ class WishlestController extends Controller
     public function getFavorites()
     {
         $user = Auth::user();
-        
-        $favorites = Favorite::where('user_id', $user->id)->with('listing')->get();
-
+        if (!$user) { 
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $favorites = Wishlist::where('user_id', $user->id)->with('listing')->get();
         return response()->json($favorites, 200);
     }
 }
