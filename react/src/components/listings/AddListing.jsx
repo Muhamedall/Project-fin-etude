@@ -1,10 +1,12 @@
-import { useState, } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from '../../api/api';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 const AddListing = () => {
   const [selectedDateDebut, setSelectedDateDebut] = useState(null);
   const [selectedDateFin, setSelectedDateFin] = useState(null);
@@ -15,8 +17,10 @@ const AddListing = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [people, setPeople] = useState(0);
   const [rooms, setRooms] = useState(0);
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' }); // Alert state
   const user = useSelector((state) => state.users.user);
-  
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -38,8 +42,28 @@ const AddListing = () => {
         },
       });
       console.log('Listing added:', response.data);
+
+      // Show success alert
+      setAlert({ show: true, message: 'Listing added successfully!', type: 'success' });
+
+      // Clear form inputs
+      setTitle('');
+      setLocation('');
+      setPrice(0);
+      setImages([]);
+      setImagePreviews([]);
+      setPeople(0);
+      setRooms(0);
+      setSelectedDateDebut(null);
+      setSelectedDateFin(null);
+
+      // Redirect to home page after 2 seconds
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (error) {
       console.error('Error adding listing:', error.response ? error.response.data : error.message);
+      setAlert({ show: true, message: 'Error adding listing. Please try again.', type: 'error' });
     }
   };
 
@@ -73,12 +97,27 @@ const AddListing = () => {
     e.preventDefault();
     setRooms(prevValue => prevValue + 1);
   };
-console.log(JSON.stringify(user))
+
   return (
     <div className="">
       <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Add New Listing</h2>
+
+        {/* Alert */}
+        {alert.show && (
+          <div
+            className={`mt-4 p-4 rounded ${
+              alert.type === 'success'
+                ? 'bg-green-100 border border-green-400 text-green-700'
+                : 'bg-red-100 border border-red-400 text-red-700'
+            }`}
+          >
+            {alert.message}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="mt-4">
+          {/* Title */}
           <div className="mb-4">
             <label htmlFor="title" className="block text-gray-700 dark:text-white font-bold">Title</label>
             <input
@@ -87,8 +126,11 @@ console.log(JSON.stringify(user))
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full p-2 mt-2 bg-gray-200 dark:bg-gray-600 dark:text-white rounded"
+              required
             />
           </div>
+
+       
           <div className="mb-4">
             <label htmlFor="location" className="block text-gray-700 dark:text-white font-bold">Location</label>
             <input
@@ -97,8 +139,11 @@ console.log(JSON.stringify(user))
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="w-full p-2 mt-2 bg-gray-200 dark:bg-gray-600 dark:text-white rounded"
+              required
             />
           </div>
+
+        
           <div className="mb-4">
             <label htmlFor="price" className="block text-gray-700 dark:text-white font-bold">Price (MAD)</label>
             <span className='mr-2 dark:text-white'>0 MAD</span>
@@ -118,8 +163,11 @@ console.log(JSON.stringify(user))
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               className="w-full p-2 mt-2 bg-gray-200 dark:bg-gray-600 dark:text-white rounded"
+              required
             />
           </div>
+
+        
           <div className="mb-4">
             <label htmlFor="images" className="block text-gray-700 dark:text-white font-bold">Images</label>
             <input
@@ -128,13 +176,18 @@ console.log(JSON.stringify(user))
               onChange={handleImageChange}
               className="w-full p-2 mt-2 bg-gray-200 dark:bg-gray-600 rounded dark:text-white"
               multiple
+              required
             />
           </div>
+
+        
           <div className="flex flex-wrap">
             {imagePreviews.map((preview, index) => (
               <img key={index} src={preview} alt={`Image ${index}`} className="w-20 h-20 object-cover m-2" />
             ))}
           </div>
+
+        
           <label className="block text-gray-700 dark:text-white font-bold">Availability</label>
           <div className="static flex flex-row">
             <div>
@@ -145,6 +198,7 @@ console.log(JSON.stringify(user))
                 className="bg-gray-50 border border-gray-300 text-gray-950 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholderText="Select start date"
                 name="date-debut"
+                required
               />
             </div>
             <span className="mx-4 text-gray-500 dark:text-white">to</span>
@@ -156,9 +210,12 @@ console.log(JSON.stringify(user))
                 className="bg-gray-50 border border-gray-300 text-gray-950 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholderText="Select end date"
                 name="date-fin"
+                required
               />
             </div>
           </div>
+
+        
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-white font-bold">Number of people</label>
             <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
@@ -186,6 +243,8 @@ console.log(JSON.stringify(user))
               </button>
             </div>
           </div>
+
+     
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-white font-bold">Number of rooms</label>
             <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
@@ -213,7 +272,11 @@ console.log(JSON.stringify(user))
               </button>
             </div>
           </div>
-          <button type="submit" className="mt-4 px-4 py-2 bg-slate-950 text-white dark:bg-white dark:text-slate-950 font-bold rounded">Add Listing</button>
+
+         
+          <button type="submit" className="mt-4 px-4 py-2 bg-slate-950 text-white dark:bg-white dark:text-slate-950 font-bold rounded">
+            Add Listing
+          </button>
         </form>
       </div>
     </div>

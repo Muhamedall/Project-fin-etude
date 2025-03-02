@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-
 const loadFromLocalStorage = (userId) => {
     try {
         const serializedState = localStorage.getItem(`favories_${userId}`);
@@ -26,17 +25,17 @@ const loadNumberFavoriesFromLocalStorage = (userId) => {
     try {
         const serializedState = localStorage.getItem(`numberFavories_${userId}`);
         if (serializedState === null) {
-            return 0; 
+            return 0;
         }
-        return parseInt(serializedState, 10); 
+        return parseInt(serializedState, 10);
     } catch (err) {
-        return 0; 
+        return 0;
     }
 };
 
 const saveNumberFavoriesToLocalStorage = (userId, numberFavories) => {
     try {
-        localStorage.setItem(`numberFavories_${userId}`, numberFavories.toString()); 
+        localStorage.setItem(`numberFavories_${userId}`, numberFavories.toString());
     } catch (err) {
         console.error('Error saving numberFavories to local storage:', err);
     }
@@ -44,7 +43,7 @@ const saveNumberFavoriesToLocalStorage = (userId, numberFavories) => {
 
 const initialState = {
     favories: [],
-    numberFavories: 0, 
+    numberFavories: 0,
     loading: false,
     error: null,
 };
